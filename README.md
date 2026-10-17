@@ -1,6 +1,6 @@
 # Bazar Viral
 
-Primera versión funcional del bazar de productos virales: portada adaptable, catálogo navegable, buscador, filtros, fichas individuales, favoritos, carrito local y presentación de Comunidad.
+Primera versión funcional del bazar de productos virales: portada adaptable, catálogo navegable, buscador, filtros, fichas individuales, favoritos, carrito local, presentación de Comunidad y acceso demostrativo por roles.
 
 ## Abrir localmente
 
