@@ -1,0 +1,21 @@
+@media (max-width: 900px) {
+  .seller-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .seller-sidebar,
+  .seller-card {
+    min-width: 0;
+  }
+
+  .seller-progress {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .profile-layout,
+  .product-editor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

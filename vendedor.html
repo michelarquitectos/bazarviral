@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Configura tu tienda y publica tu primer producto en Bazar Viral.">
+  <title>Prepara tu tienda — Bazar Viral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendedor.css">
+  <link rel="stylesheet" href="vendedor-responsive.css">
+</head>
+<body>
+  <header class="seller-header">
+    <a class="seller-brand" href="index.html"><img src="assets/bazar-viral-logo.png" alt="Bazar Viral"></a>
+    <div class="header-status"><span></span> Configuración de demostración</div>
+    <a class="exit-link" href="cuenta.html">Guardar y salir</a>
+  </header>
+
+  <main class="seller-shell">
+    <aside class="seller-sidebar">
+      <p class="eyebrow">TU TIENDA</p>
+      <h1>Todo listo para empezar bien.</h1>
+      <p>Completa una sección a la vez. Antes de publicar podrás revisar cómo verá la gente tu información.</p>
+      <nav class="seller-progress" aria-label="Progreso de configuración">
+        <button class="active" data-go="1"><span>1</span><div><strong>Perfil público</strong><small>Nombre y presentación</small></div></button>
+        <button data-go="2"><span>2</span><div><strong>Verificación</strong><small>Datos privados</small></div></button>
+        <button data-go="3"><span>3</span><div><strong>Condiciones</strong><small>Comisión y reglas</small></div></button>
+        <button data-go="4"><span>4</span><div><strong>Primer producto</strong><small>Publicación de prueba</small></div></button>
+      </nav>
+      <div class="privacy-card"><span>🔒</span><div><strong>Tu información está separada</strong><p>La tienda es pública. Los datos de verificación nunca aparecen en tu perfil.</p></div></div>
+    </aside>
+
+    <section class="seller-card" id="sellerCard">
+      <div class="mobile-progress"><span id="mobileStep">PASO 1 DE 4</span><div><i id="progressBar"></i></div></div>
+
+      <section class="seller-step active" data-step="1">
+        <div class="step-heading"><p class="eyebrow">PERFIL PÚBLICO</p><h2>¿Cómo se presentará tu tienda?</h2><p>Esta información sí podrá verla la comunidad.</p></div>
+        <div class="profile-layout">
+          <form class="seller-form" id="profileForm" novalidate>
+            <label>Nombre de la tienda <input id="storeName" required minlength="3" maxlength="42" placeholder="Ej. Cosas Bonitas MX"><small class="field-error"></small></label>
+            <label>Dirección pública <span class="slug-input"><b>bazarviral.mx/tienda/</b><input id="storeSlug" required pattern="[a-z0-9-]{3,30}" placeholder="cosas-bonitas"></span><small class="field-hint">Solo letras minúsculas, números y guiones.</small><small class="field-error"></small></label>
+            <label>Ciudad o región <input id="storeCity" required minlength="2" placeholder="Ej. Guadalajara, Jalisco"><small class="field-error"></small></label>
+            <label>Presentación <textarea id="storeBio" required minlength="20" maxlength="180" placeholder="Cuenta en pocas palabras qué vendes y qué hace especial a tu tienda."></textarea><span class="character-count"><b id="bioCount">0</b>/180</span><small class="field-error"></small></label>
+            <fieldset><legend>Categoría principal</legend><div class="choice-grid" id="categoryChoices"><button type="button" class="selected" data-value="Hogar">🏠 Hogar</button><button type="button" data-value="Papelería">✏️ Papelería</button><button type="button" data-value="Artesanías">🧵 Artesanías</button><button type="button" data-value="Bienestar">🌿 Bienestar</button><button type="button" data-value="Digitales">📚 Digitales</button><button type="button" data-value="Moda">✨ Moda</button></div></fieldset>
+          </form>
+          <aside class="live-preview"><small>VISTA PREVIA</small><div class="store-cover"><span id="previewInitial">T</span></div><strong id="previewName">Tu tienda</strong><p id="previewBio">Tu presentación aparecerá aquí.</p><div><span id="previewCategory">Hogar</span><span id="previewCity">Tu ciudad</span></div></aside>
+        </div>
+        <div class="step-actions"><a href="cuenta.html" class="secondary-button">Salir</a><button class="primary-button" data-next>GUARDAR Y CONTINUAR</button></div>
+      </section>
+
+      <section class="seller-step" data-step="2" hidden>
+        <div class="step-heading"><p class="eyebrow">VERIFICACIÓN</p><h2>Protejamos a vendedores y compradores.</h2><p>En la versión real estos datos se revisarán de forma privada antes de activar ventas.</p></div>
+        <div class="demo-warning"><span>ⓘ</span><div><strong>En esta demostración usa información inventada.</strong><p>No adjuntaremos documentos ni guardaremos estos datos.</p></div></div>
+        <form class="seller-form verification-form" id="verificationForm" novalidate>
+          <fieldset><legend>¿Cómo venderás?</legend><div class="radio-cards"><label><input type="radio" name="sellerType" value="persona" checked><span><b>Persona física</b><small>Vendo por cuenta propia.</small></span></label><label><input type="radio" name="sellerType" value="negocio"><span><b>Negocio o marca</b><small>Vendo a nombre de una empresa.</small></span></label></div></fieldset>
+          <div class="two-columns"><label>Nombre para verificación <input required id="legalName" minlength="4" placeholder="Nombre de demostración"><small class="field-error"></small></label><label>Teléfono de contacto <input required id="sellerPhone" type="tel" pattern="[0-9 +()-]{10,20}" placeholder="10 dígitos inventados"><small class="field-error"></small></label></div>
+          <div class="two-columns"><label>Estado de operación <select id="sellerState" required><option value="">Selecciona una opción</option><option>Aguascalientes</option><option>Ciudad de México</option><option>Jalisco</option><option>Nuevo León</option><option>Puebla</option><option>Querétaro</option><option>Otro estado de México</option></select><small class="field-error"></small></label><label>Tipo de productos <select id="productOrigin" required><option value="">Selecciona una opción</option><option>Los fabrico o diseño</option><option>Los distribuyo</option><option>Productos digitales propios</option><option>Una combinación</option></select><small class="field-error"></small></label></div>
+        </form>
+        <div class="verification-list"><h3>Cuando activemos ventas te pediremos:</h3><div><span>✓</span> Identificación y datos fiscales</div><div><span>✓</span> Cuenta para recibir depósitos</div><div><span>✓</span> Comprobación de propiedad o autorización de productos</div></div>
+        <div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" data-next>CONTINUAR</button></div>
+      </section>
+
+      <section class="seller-step" data-step="3" hidden>
+        <div class="step-heading"><p class="eyebrow">CONDICIONES CLARAS</p><h2>Sabes cuánto recibes antes de vender.</h2><p>Este ejemplo nos permite aprobar la experiencia; la tarifa definitiva se confirmará antes del lanzamiento.</p></div>
+        <div class="commission-card"><div><small>EJEMPLO DE COMISIÓN</small><strong>12%</strong><p>Solo sobre una venta completada.</p></div><div class="commission-example"><p><span>Precio del producto</span><b>$500</b></p><p><span>Comisión de plataforma (12%)</span><b>− $60</b></p><p class="seller-receives"><span>Tú recibes</span><b>$440 MXN</b></p><small>Ejemplo sin envío, impuestos ni comisiones del procesador de pago.</small></div></div>
+        <div class="conditions-grid"><article><span>01</span><div><strong>Tú decides el precio</strong><p>Lo verás desglosado antes de publicar.</p></div></article><article><span>02</span><div><strong>Cobro solo al vender</strong><p>Registrarte y preparar tu tienda no tiene costo.</p></div></article><article><span>03</span><div><strong>Responsabilidad compartida</strong><p>Tú atiendes producto y entrega; Bazar Viral facilita descubrimiento y plataforma.</p></div></article><article><span>04</span><div><strong>Sin promesas de ingresos</strong><p>Los resultados dependen del producto, contenido y demanda.</p></div></article></div>
+        <div class="agreement-box"><label><input id="commissionAgreement" type="checkbox"><span>Entiendo que el 12% es una propuesta de demostración y que revisaré la tarifa definitiva antes de activar ventas.</span></label><label><input id="rulesAgreement" type="checkbox"><span>Publicaré únicamente productos propios, autorizados, legales y descritos con honestidad.</span></label><small id="agreementError"></small></div>
+        <div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" data-next>ACEPTAR Y CONTINUAR</button></div>
+      </section>
+
+      <section class="seller-step" data-step="4" hidden>
+        <div class="step-heading"><p class="eyebrow">PRIMER PRODUCTO</p><h2>Crea una publicación de prueba.</h2><p>Podrás revisarla completa antes de enviarla. Nada quedará a la venta todavía.</p></div>
+        <div class="product-editor">
+          <form class="seller-form" id="productForm" novalidate>
+            <label>Nombre del producto <input id="productTitle" required minlength="4" maxlength="64" placeholder="Ej. Lámpara nube con luz cálida"><small class="field-error"></small></label>
+            <div class="two-columns"><label>Categoría <select id="productCategory" required><option value="">Selecciona</option><option>Hogar</option><option>Papelería</option><option>Artesanías</option><option>Bienestar</option><option>Digitales</option><option>Moda</option></select><small class="field-error"></small></label><label>Tipo <select id="productType" required><option value="">Selecciona</option><option value="physical">Producto físico</option><option value="digital">Producto digital</option></select><small class="field-error"></small></label></div>
+            <div class="two-columns"><label>Precio en MXN <input id="productPrice" required type="number" min="1" max="999999" placeholder="499"><small class="field-error"></small></label><label>Disponibilidad <input id="productStock" required type="number" min="1" max="9999" placeholder="10"><small class="field-error"></small></label></div>
+            <label>Descripción breve <textarea id="productDescription" required minlength="25" maxlength="240" placeholder="Explica qué es, para quién sirve y por qué llama la atención."></textarea><small class="field-error"></small></label>
+            <label>Entrega <select id="productDelivery" required><option value="">Selecciona una condición</option><option>Envío de 3 a 5 días</option><option>Producto hecho bajo pedido</option><option>Descarga inmediata</option></select><small class="field-error"></small></label>
+          </form>
+          <aside class="product-draft"><div class="draft-image"><span>＋</span><b>Fotografía pendiente</b><small>Se añadirá en la siguiente etapa</small></div><p id="draftCategory">CATEGORÍA</p><h3 id="draftTitle">Tu producto</h3><strong id="draftPrice">$0 MXN</strong><small>Vista previa · No publicado</small></aside>
+        </div>
+        <div class="review-note"><span>✓</span><div><strong>Habrá una revisión antes de publicar</strong><p>Revisaremos claridad, categoría, imágenes y cumplimiento. Podrás corregir cualquier observación.</p></div></div>
+        <div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" id="submitStore">ENVIAR BORRADOR A REVISIÓN</button></div>
+      </section>
+    </section>
+
+    <section class="completion-card" id="completionCard" hidden>
+      <div class="success-mark">✓</div><p class="eyebrow">BORRADOR COMPLETADO</p><h2>Tu tienda ya tiene una base profesional.</h2><p><strong id="completeStore">Tu tienda</strong> y su primer producto quedaron preparados para revisión. En esta demostración nada fue publicado ni enviado a internet.</p>
+      <div class="completion-summary"><article><span>✓</span><div><strong>Perfil público</strong><small>Preparado</small></div></article><article><span>✓</span><div><strong>Verificación</strong><small>Recorrido conocido</small></div></article><article><span>✓</span><div><strong>Condiciones</strong><small>Revisadas</small></div></article><article><span>◷</span><div><strong>Primer producto</strong><small>Pendiente de revisión</small></div></article></div>
+      <div class="completion-actions"><a class="primary-button" href="catalogo.html">VER EL CATÁLOGO</a><button class="secondary-button" id="editDraft">EDITAR BORRADOR</button></div><small>La siguiente etapa conectará este recorrido con un panel real de vendedor.</small>
+    </section>
+  </main>
+  <div class="save-toast" id="saveToast" role="status">Progreso guardado para esta demostración</div>
+  <script src="vendedor.js"></script>
+</body>
+</html>

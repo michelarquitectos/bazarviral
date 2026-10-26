@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Configura tu perfil de creador y conoce cómo funcionan las campañas en Bazar Viral.">
+  <title>Prepara tu perfil creativo — Bazar Viral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendedor.css">
+  <link rel="stylesheet" href="vendedor-responsive.css">
+  <link rel="stylesheet" href="creador.css">
+</head>
+<body class="creator-page">
+  <header class="seller-header">
+    <a class="seller-brand" href="index.html"><img src="assets/bazar-viral-logo.png" alt="Bazar Viral"></a>
+    <div class="header-status"><span></span> Espacio creativo de demostración</div>
+    <a class="exit-link" href="cuenta.html">Guardar y salir</a>
+  </header>
+
+  <main class="seller-shell">
+    <aside class="seller-sidebar">
+      <p class="eyebrow">TU PERFIL CREATIVO</p>
+      <h1>Tu contenido también puede tener valor.</h1>
+      <p>Construye un perfil claro, conoce las reglas y prueba cómo vincularías un video a una campaña.</p>
+      <nav class="seller-progress" aria-label="Progreso de configuración">
+        <button class="active" data-go="1"><span>1</span><div><strong>Perfil público</strong><small>Identidad creativa</small></div></button>
+        <button data-go="2"><span>2</span><div><strong>Autenticidad</strong><small>Contenido y comunidad</small></div></button>
+        <button data-go="3"><span>3</span><div><strong>Campañas</strong><small>Comisión y atribución</small></div></button>
+        <button data-go="4"><span>4</span><div><strong>Primer video</strong><small>Vinculación de prueba</small></div></button>
+      </nav>
+      <div class="privacy-card"><span>✦</span><div><strong>La originalidad importa</strong><p>Premiaremos contenido útil y auténtico, no solo el número de seguidores.</p></div></div>
+    </aside>
+
+    <section class="seller-card" id="creatorCard">
+      <div class="mobile-progress"><span id="mobileStep">PASO 1 DE 4</span><div><i id="progressBar"></i></div></div>
+
+      <section class="seller-step active" data-step="1">
+        <div class="step-heading"><p class="eyebrow">PERFIL PÚBLICO</p><h2>¿Cómo te conocerá la comunidad?</h2><p>Crea una identidad memorable sin compartir datos privados.</p></div>
+        <div class="profile-layout">
+          <form class="seller-form" id="creatorProfileForm" novalidate>
+            <label>Nombre de creador <input id="creatorName" required minlength="2" maxlength="40" placeholder="Ej. Soy Mar de Ideas"><small class="field-error"></small></label>
+            <label>Nombre de usuario <span class="slug-input"><b>bazarviral.mx/@</b><input id="creatorHandle" required pattern="[a-z0-9._-]{3,24}" placeholder="mardeideas"></span><small class="field-hint">Letras minúsculas, números, punto, guion y guion bajo.</small><small class="field-error"></small></label>
+            <label>Presentación <textarea id="creatorBio" required minlength="20" maxlength="180" placeholder="Describe tu estilo y el tipo de contenido que disfrutas crear."></textarea><span class="character-count"><b id="creatorBioCount">0</b>/180</span><small class="field-error"></small></label>
+            <fieldset><legend>Temas principales</legend><div class="choice-grid topic-grid" id="topicChoices"><button type="button" class="selected" data-value="Hallazgos virales">🔥 Hallazgos</button><button type="button" data-value="Hogar">🏠 Hogar</button><button type="button" data-value="Papelería">✏️ Papelería</button><button type="button" data-value="Bienestar">🌿 Bienestar</button><button type="button" data-value="Familia">🎈 Familia</button><button type="button" data-value="Deporte">⚡ Deporte</button></div></fieldset>
+          </form>
+          <aside class="creator-preview"><small>VISTA PREVIA</small><div class="creator-avatar" id="previewCreatorInitial">C</div><strong id="previewCreatorName">Tu nombre creativo</strong><b id="previewCreatorHandle">@tuusuario</b><p id="previewCreatorBio">Tu presentación aparecerá aquí.</p><span id="previewCreatorTopic">Hallazgos virales</span><div class="preview-stats"><div><strong>—</strong><small>Videos</small></div><div><strong>—</strong><small>Impacto</small></div></div></aside>
+        </div>
+        <div class="step-actions"><a href="cuenta.html" class="secondary-button">Salir</a><button class="primary-button" data-next>GUARDAR Y CONTINUAR</button></div>
+      </section>
+
+      <section class="seller-step" data-step="2" hidden>
+        <div class="step-heading"><p class="eyebrow">AUTENTICIDAD</p><h2>Importa cómo creas, no solo cuántos te siguen.</h2><p>Queremos una comunidad con recomendaciones honestas y contenido propio.</p></div>
+        <div class="creator-principles"><article><span>01</span><strong>Original</strong><p>Tu voz, tu edición y tu experiencia.</p></article><article><span>02</span><strong>Útil</strong><p>Ayuda a decidir, usar o entender.</p></article><article><span>03</span><strong>Transparente</strong><p>Indica cuando puedes recibir comisión.</p></article></div>
+        <form class="seller-form" id="authenticityForm" novalidate>
+          <fieldset><legend>¿Dónde publicas principalmente?</legend><div class="radio-cards platform-cards"><label><input type="radio" name="platform" value="TikTok" checked><span><b>TikTok</b><small>Videos verticales</small></span></label><label><input type="radio" name="platform" value="Instagram"><span><b>Instagram</b><small>Reels y publicaciones</small></span></label><label><input type="radio" name="platform" value="YouTube"><span><b>YouTube</b><small>Shorts y videos</small></span></label></div></fieldset>
+          <div class="two-columns"><label>Enlace público de demostración <input id="socialLink" required type="url" placeholder="https://ejemplo.com/tu-perfil"><small class="field-hint">Usa un enlace inventado para esta prueba.</small><small class="field-error"></small></label><label>Tamaño aproximado de comunidad <select id="audienceSize" required><option value="">Selecciona</option><option>Estoy empezando</option><option>1 a 1,000</option><option>1,001 a 10,000</option><option>10,001 a 50,000</option><option>Más de 50,000</option></select><small class="field-error"></small></label></div>
+          <label>¿Qué hace diferente tu contenido? <textarea id="creativeDifference" required minlength="25" maxlength="220" placeholder="Cuéntanos tu enfoque, humor, experiencia o forma de explicar."></textarea><small class="field-error"></small></label>
+        </form>
+        <div class="demo-warning"><span>ⓘ</span><div><strong>En esta demostración no revisaremos cuentas reales.</strong><p>La verificación y las métricas se conectarán únicamente cuando el sistema real esté listo.</p></div></div>
+        <div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" data-next>CONTINUAR</button></div>
+      </section>
+
+      <section class="seller-step" data-step="3" hidden>
+        <div class="step-heading"><p class="eyebrow">CAMPAÑAS CLARAS</p><h2>Conoce las reglas antes de crear.</h2><p>Cada campaña mostrará producto, requisitos, comisión y periodo de atribución.</p></div>
+        <div class="campaign-example"><div class="campaign-product"><span>💡</span><div><small>CAMPAÑA DE EJEMPLO</small><strong>Lámpara hongo ámbar</strong><p>Contenido demostrativo · Video vertical</p></div></div><div class="campaign-terms"><article><small>COMISIÓN PROPUESTA</small><strong>8%</strong><span>por venta atribuida</span></article><article><small>ATRIBUCIÓN PROPUESTA</small><strong>7 días</strong><span>desde el clic</span></article><article><small>PAGO</small><strong>Validado</strong><span>después de la entrega</span></article></div></div>
+        <div class="attribution-flow"><h3>Así funcionaría una recomendación</h3><div><article><span>1</span><p>Publicas contenido original con aviso de comisión.</p></article><i>→</i><article><span>2</span><p>Una persona visita el producto desde tu enlace.</p></article><i>→</i><article><span>3</span><p>Si compra dentro del periodo, se registra la atribución.</p></article></div></div>
+        <div class="conditions-grid"><article><span>✓</span><div><strong>Sin compra obligatoria</strong><p>Podrás elegir únicamente campañas que te interesen.</p></div></article><article><span>✓</span><div><strong>Sin ingresos garantizados</strong><p>La comisión depende de ventas válidas y condiciones visibles.</p></div></article><article><span>✓</span><div><strong>Contenido identificado</strong><p>Siempre debe indicarse la relación comercial.</p></div></article><article><span>✓</span><div><strong>Premios separados</strong><p>El contenido destacado podrá recibir reconocimientos adicionales.</p></div></article></div>
+        <div class="agreement-box"><label><input id="campaignAgreement" type="checkbox"><span>Entiendo que el 8% y los 7 días son una propuesta de demostración; cada campaña mostrará sus condiciones definitivas.</span></label><label><input id="originalityAgreement" type="checkbox"><span>Compartiré contenido propio, honesto y claramente identificado cuando incluya un enlace de comisión.</span></label><small id="agreementError"></small></div>
+        <div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" data-next>ACEPTAR Y CONTINUAR</button></div>
+      </section>
+
+      <section class="seller-step" data-step="4" hidden>
+        <div class="step-heading"><p class="eyebrow">PRIMER CONTENIDO</p><h2>Vincula un video de prueba.</h2><p>Esto simula el proceso. No se publicará ni se enviará ningún enlace.</p></div>
+        <div class="product-editor">
+          <form class="seller-form" id="contentForm" novalidate>
+            <label>Campaña <select id="campaignSelect" required><option value="">Selecciona</option><option value="Lámpara hongo ámbar">Lámpara hongo ámbar · 8% de ejemplo</option><option value="Kit de papelería creativa">Kit de papelería creativa · 7% de ejemplo</option><option value="Guía digital de organización">Guía digital de organización · 10% de ejemplo</option></select><small class="field-error"></small></label>
+            <div class="two-columns"><label>Plataforma <select id="contentPlatform" required><option value="">Selecciona</option><option>TikTok</option><option>Instagram Reels</option><option>YouTube Shorts</option></select><small class="field-error"></small></label><label>Estado <select id="contentStatus" required><option value="">Selecciona</option><option>Borrador, aún no publicado</option><option>Video de demostración</option></select><small class="field-error"></small></label></div>
+            <label>Enlace de demostración <input id="contentLink" required type="url" placeholder="https://ejemplo.com/video"><small class="field-hint">No uses un enlace personal real durante la prueba.</small><small class="field-error"></small></label>
+            <label>Título o idea principal <input id="contentTitle" required minlength="6" maxlength="80" placeholder="Ej. Probé la lámpara viral que parece un hongo"><small class="field-error"></small></label>
+            <label>¿Qué aporta tu video? <textarea id="contentValue" required minlength="25" maxlength="220" placeholder="Explica qué muestras, pruebas o enseñas de manera original."></textarea><small class="field-error"></small></label>
+            <label class="disclosure-check"><input id="disclosure" type="checkbox"><span>Mi contenido incluirá un aviso visible de que puedo recibir comisión.</span></label><small class="terms-error" id="disclosureError"></small>
+          </form>
+          <aside class="video-preview"><div class="video-frame"><span>▶</span><small>VISTA PREVIA DEL VIDEO</small></div><b id="previewPlatform">PLATAFORMA</b><h3 id="previewContentTitle">Tu idea de contenido</h3><p id="previewCampaign">Selecciona una campaña</p><span>Enlace de comisión · Demostración</span></aside>
+        </div>
+        <div class="review-note"><span>✦</span><div><strong>La comunidad premiará calidad, no ruido</strong><p>Los videos más originales, claros y útiles podrán aparecer en destacados.</p></div></div>
+        <div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" id="submitCreator">ENVIAR BORRADOR A REVISIÓN</button></div>
+      </section>
+    </section>
+
+    <section class="completion-card" id="completionCard" hidden>
+      <div class="success-mark">✦</div><p class="eyebrow">RECORRIDO COMPLETADO</p><h2>Tu perfil creativo tiene una dirección clara.</h2><p><strong id="completeCreator">Tu perfil</strong> y su primer video de prueba quedaron preparados. Nada fue publicado ni enviado a internet.</p>
+      <div class="completion-summary"><article><span>✓</span><div><strong>Perfil creativo</strong><small>Preparado</small></div></article><article><span>✓</span><div><strong>Autenticidad</strong><small>Presentada</small></div></article><article><span>✓</span><div><strong>Reglas de campaña</strong><small>Comprendidas</small></div></article><article><span>◷</span><div><strong>Primer video</strong><small>Pendiente de revisión</small></div></article></div>
+      <div class="completion-actions"><a class="primary-button" href="index.html#comunidad">VER LA COMUNIDAD</a><button class="secondary-button" id="editCreatorDraft">EDITAR BORRADOR</button></div><small>La siguiente etapa conectará este recorrido con campañas y estadísticas reales.</small>
+    </section>
+  </main>
+  <div class="save-toast" id="saveToast" role="status">Progreso guardado para esta demostración</div>
+  <script src="creador.js"></script>
+</body>
+</html>
