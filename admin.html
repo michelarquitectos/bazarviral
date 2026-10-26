@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Panel demostrativo de administración de Bazar Viral.">
+  <title>Administración — Bazar Viral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-page">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a class="admin-logo" href="index.html"><img src="assets/bazar-viral-logo.png" alt="Bazar Viral"></a>
+    <p class="sidebar-label">ADMINISTRACIÓN</p>
+    <nav class="admin-nav" aria-label="Administración principal">
+      <button class="active" data-section="resumen"><span>⌂</span>Resumen</button>
+      <button data-section="pendientes"><span>◷</span>Pendientes <b id="navPending">7</b></button>
+      <button data-section="productos"><span>◇</span>Productos</button>
+      <button data-section="personas"><span>♙</span>Personas</button>
+      <button data-section="contenido"><span>▶</span>Contenido</button>
+      <button data-section="campanas"><span>✦</span>Campañas</button>
+      <button data-section="pedidos"><span>□</span>Pedidos</button>
+    </nav>
+    <div class="sidebar-bottom"><button data-section="ajustes"><span>⚙</span>Ajustes</button><a href="index.html">← Ver sitio público</a><div class="admin-profile"><span>BV</span><div><strong>Administración</strong><small>Modo demostración</small></div></div></div>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-topbar"><button class="sidebar-toggle" id="sidebarToggle">☰</button><form class="admin-search" id="adminSearch"><span>⌕</span><input id="searchInput" placeholder="Buscar producto, vendedor o contenido"><kbd>Ctrl K</kbd></form><div class="topbar-actions"><button class="notification-button" aria-label="Notificaciones">♢<b>3</b></button><span class="demo-pill">Demostración local</span></div></header>
+
+    <div class="admin-content">
+      <section class="admin-section active" data-page="resumen">
+        <div class="admin-heading"><div><p class="eyebrow">CENTRO DE CONTROL</p><h1>Buenos días. Todo bajo control.</h1><p>Lo urgente primero; el resto puede esperar.</p></div><button class="primary-button" data-jump="pendientes">REVISAR 7 PENDIENTES</button></div>
+        <div class="demo-notice"><span>ⓘ</span><p><strong>Panel de demostración.</strong> Las decisiones solo cambian esta vista local. No hay usuarios, cobros ni publicaciones reales.</p></div>
+        <div class="metric-grid"><article><div class="metric-icon red">◷</div><div><small>POR REVISAR</small><strong id="metricPending">7</strong><span>3 requieren atención hoy</span></div></article><article><div class="metric-icon gold">◇</div><div><small>PRODUCTOS ACTIVOS</small><strong>124</strong><span>+8 esta semana</span></div></article><article><div class="metric-icon green">♙</div><div><small>COMUNIDAD</small><strong>386</strong><span>92 vendedores · 71 creadores</span></div></article><article><div class="metric-icon purple">✦</div><div><small>CAMPAÑAS ACTIVAS</small><strong>6</strong><span>18 videos vinculados</span></div></article></div>
+
+        <div class="dashboard-grid">
+          <section class="admin-card priority-card"><div class="card-heading"><div><p class="eyebrow">PRIORIDAD</p><h2>Lo que necesita tu decisión.</h2></div><button data-jump="pendientes">Ver todos →</button></div><div class="priority-list" id="priorityList"></div></section>
+          <section class="admin-card pulse-card"><div class="card-heading"><div><p class="eyebrow">PULSO DE LA SEMANA</p><h2>Actividad saludable.</h2></div></div><div class="bar-chart" aria-label="Actividad semanal"><div style="--value:42%"><span>L</span></div><div style="--value:57%"><span>M</span></div><div style="--value:48%"><span>M</span></div><div style="--value:72%"><span>J</span></div><div class="today" style="--value:88%"><span>V</span></div><div style="--value:60%"><span>S</span></div><div style="--value:36%"><span>D</span></div></div><dl class="pulse-stats"><div><dt>Visitas</dt><dd>2,480</dd></div><div><dt>Favoritos</dt><dd>312</dd></div><div><dt>Interacciones</dt><dd>684</dd></div></dl><small>Datos ilustrativos para definir la futura vista analítica.</small></section>
+        </div>
+
+        <section class="admin-card recent-card"><div class="card-heading"><div><p class="eyebrow">ACTIVIDAD RECIENTE</p><h2>Qué ocurrió y quién debe actuar.</h2></div><button id="clearActivityFilter">Ver toda</button></div><div class="activity-table"><div class="activity-head"><span>Actividad</span><span>Área</span><span>Estado</span><span>Momento</span></div><div id="activityRows"></div></div></section>
+      </section>
+
+      <section class="admin-section" data-page="pendientes" hidden>
+        <div class="admin-heading compact"><div><p class="eyebrow">BANDEJA DE REVISIÓN</p><h1>Pendientes, sin perder el hilo.</h1><p>Cada elemento explica qué revisar y cuál es el siguiente paso.</p></div></div>
+        <div class="queue-toolbar"><div class="queue-filters" id="queueFilters"><button class="active" data-filter="todos">Todos <span id="allCount">7</span></button><button data-filter="producto">Productos</button><button data-filter="persona">Personas</button><button data-filter="contenido">Contenido</button></div><select id="queueSort" aria-label="Ordenar pendientes"><option value="priority">Prioridad</option><option value="newest">Más recientes</option><option value="type">Tipo</option></select></div>
+        <div class="queue-layout"><section class="review-queue" id="reviewQueue"></section><aside class="review-guide"><p class="eyebrow">GUÍA RÁPIDA</p><h3>Decidir con consistencia.</h3><ol><li><span>1</span><div><strong>Identidad clara</strong><small>Nombre, categoría y responsable.</small></div></li><li><span>2</span><div><strong>Información comprobable</strong><small>Sin promesas engañosas.</small></div></li><li><span>3</span><div><strong>Condiciones completas</strong><small>Precio, comisión y entrega visibles.</small></div></li><li><span>4</span><div><strong>Contenido seguro</strong><small>Original, legal y apropiado.</small></div></li></ol><p>Si falta información, solicita cambios. Aprobar rápido nunca debe ser más importante que aprobar bien.</p></aside></div>
+      </section>
+
+      <section class="admin-section" data-page="productos" hidden><div class="admin-heading compact"><div><p class="eyebrow">CATÁLOGO</p><h1>Productos claros y bien presentados.</h1><p>Una vista preparada para editar, pausar y organizar el catálogo.</p></div></div><div class="status-board"><article><span>124</span><strong>Activos</strong><small>Visibles en el catálogo</small></article><article><span>3</span><strong>En revisión</strong><small>Esperando decisión</small></article><article><span>6</span><strong>Borradores</strong><small>Incompletos por el vendedor</small></article><article><span>2</span><strong>Con observaciones</strong><small>Requieren correcciones</small></article></div><div class="admin-card placeholder-table"><h2>Catálogo central</h2><p>La siguiente etapa conectará aquí búsqueda, edición masiva, inventario y estados reales.</p><button class="secondary-button" data-jump="pendientes">VER PRODUCTOS PENDIENTES</button></div></section>
+
+      <section class="admin-section" data-page="personas" hidden><div class="admin-heading compact"><div><p class="eyebrow">PERSONAS</p><h1>Vendedores y creadores, en un solo lugar.</h1><p>Perfiles separados por función, estado y nivel de verificación.</p></div></div><div class="people-grid"><article><span>🏪</span><strong>92 vendedores</strong><p>84 activos · 2 por revisar · 6 incompletos</p><button data-jump="pendientes">Revisar solicitudes →</button></article><article><span>🎬</span><strong>71 creadores</strong><p>63 activos · 3 por revisar · 5 incompletos</p><button data-jump="pendientes">Revisar perfiles →</button></article><article><span>🛍️</span><strong>223 compradores</strong><p>Cuentas de demostración y futuras preferencias</p><button>Ver estructura →</button></article></div></section>
+
+      <section class="admin-section" data-page="contenido" hidden><div class="admin-heading compact"><div><p class="eyebrow">COMUNIDAD</p><h1>Contenido que aporta antes de destacar.</h1><p>Revisión de originalidad, transparencia y utilidad.</p></div></div><div class="content-moderation"><article class="admin-card"><div class="moderation-preview">▶</div><p class="eyebrow">PENDIENTE</p><h3>Probé la lámpara viral durante una semana</h3><span>@mardeideas · TikTok</span><button class="primary-button" data-review-id="content-1">REVISAR CONTENIDO</button></article><article class="admin-card"><div class="moderation-preview second">▶</div><p class="eyebrow">PENDIENTE</p><h3>Tres maneras de usar tu kit creativo</h3><span>@papelconchispa · Reels</span><button class="primary-button" data-review-id="content-2">REVISAR CONTENIDO</button></article></div></section>
+
+      <section class="admin-section" data-page="campanas" hidden><div class="admin-heading compact"><div><p class="eyebrow">CAMPAÑAS</p><h1>Reglas y recompensas siempre visibles.</h1><p>Control de comisión, atribución, vigencia y contenido asociado.</p></div><button class="primary-button" id="newCampaign">NUEVA CAMPAÑA</button></div><div class="campaign-admin-grid"><article><div class="campaign-status active">ACTIVA</div><span>💡</span><h3>Lámpara hongo ámbar</h3><p>8% de comisión · 7 días de atribución</p><dl><div><dt>Creadores</dt><dd>12</dd></div><div><dt>Videos</dt><dd>8</dd></div><div><dt>Interacciones</dt><dd>1,204</dd></div></dl></article><article><div class="campaign-status draft">BORRADOR</div><span>✏️</span><h3>Mes de la papelería</h3><p>Comisión y fechas por confirmar</p><dl><div><dt>Productos</dt><dd>6</dd></div><div><dt>Invitados</dt><dd>—</dd></div><div><dt>Inicio</dt><dd>Pendiente</dd></div></dl></article><article class="new-campaign-card"><span>＋</span><h3>Crea una campaña clara</h3><p>Define primero objetivo, productos, comisión y atribución.</p><button id="campaignGuide">VER GUÍA</button></article></div></section>
+
+      <section class="admin-section" data-page="pedidos" hidden><div class="admin-heading compact"><div><p class="eyebrow">PEDIDOS</p><h1>Operación preparada, todavía sin cobros.</h1><p>Esta sección se activará cuando definamos pagos, envíos y soporte.</p></div></div><div class="demo-notice"><span>🔒</span><p><strong>Pagos desactivados.</strong> No existe información financiera ni pedidos reales en esta versión.</p></div><div class="empty-admin"><span>□</span><h2>El flujo operativo está por diseñarse.</h2><p>Antes de programarlo definiremos cancelaciones, devoluciones, disputas, entregas digitales y responsabilidades de cada parte.</p></div></section>
+
+      <section class="admin-section" data-page="ajustes" hidden><div class="admin-heading compact"><div><p class="eyebrow">AJUSTES</p><h1>Decisiones importantes, reunidas.</h1><p>Las opciones sensibles quedarán protegidas y explicadas.</p></div></div><div class="settings-list"><article><div><strong>Comisión de plataforma</strong><p>Propuesta actual para vendedores.</p></div><span>12% · Por aprobar</span></article><article><div><strong>Comisión de campaña</strong><p>Ejemplo mostrado a creadores.</p></div><span>8% · Variable</span></article><article><div><strong>Periodo de atribución</strong><p>Tiempo desde el clic para reconocer una venta.</p></div><span>7 días · Propuesta</span></article><article><div><strong>Pagos y publicaciones</strong><p>Funciones reales del marketplace.</p></div><span class="off-status">Desactivados</span></article></div></section>
+    </div>
+  </main>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="review-drawer" id="reviewDrawer" aria-label="Detalle de revisión" hidden><button class="drawer-close" id="drawerClose" aria-label="Cerrar">×</button><p class="eyebrow" id="drawerType">REVISIÓN</p><h2 id="drawerTitle">Elemento</h2><p class="drawer-subtitle" id="drawerSubtitle"></p><div class="drawer-preview" id="drawerPreview"></div><dl id="drawerDetails"></dl><div class="checklist"><h3>Lista de comprobación</h3><label><input type="checkbox"> Identidad y responsable claros</label><label><input type="checkbox"> Descripción y condiciones completas</label><label><input type="checkbox"> Sin afirmaciones engañosas</label></div><label class="review-note-label">Nota interna<textarea id="reviewNote" placeholder="Escribe una observación para esta demostración"></textarea></label><div class="drawer-actions"><button class="secondary-button" id="requestChanges">SOLICITAR CAMBIOS</button><button class="primary-button" id="approveItem">APROBAR DEMO</button></div><small>Ninguna decisión sale de este navegador.</small></aside>
+  <div class="admin-toast" id="adminToast" role="status"></div>
+  <script src="admin.js?v=2"></script>
+</body>
+</html>
