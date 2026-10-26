@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Asistente demostrativo para crear campañas en Bazar Viral.">
+  <title>Nueva campaña — Bazar Viral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="campana.css">
+</head>
+<body class="campaign-page">
+  <header class="campaign-header"><a href="admin.html" class="back-admin">← Volver al panel</a><a class="campaign-brand" href="index.html"><img src="assets/bazar-viral-logo.png" alt="Bazar Viral"></a><span>Borrador de demostración</span></header>
+  <main class="campaign-shell">
+    <aside class="campaign-sidebar">
+      <p class="eyebrow">NUEVA CAMPAÑA</p><h1>Primero claridad. Después creatividad.</h1><p>Define las reglas antes de invitar creadores. Cada decisión se mostrará de forma transparente.</p>
+      <nav class="campaign-progress" aria-label="Progreso de campaña"><button class="active" data-go="1"><span>1</span><div><strong>Objetivo</strong><small>Qué queremos lograr</small></div></button><button data-go="2"><span>2</span><div><strong>Productos</strong><small>Qué se promociona</small></div></button><button data-go="3"><span>3</span><div><strong>Comisión</strong><small>Dinero y atribución</small></div></button><button data-go="4"><span>4</span><div><strong>Contenido</strong><small>Reglas creativas</small></div></button><button data-go="5"><span>5</span><div><strong>Revisión</strong><small>Todo antes de guardar</small></div></button></nav>
+      <div class="campaign-principle"><span>✦</span><p><strong>Regla de oro</strong> Un creador debe conocer comisión, atribución y requisitos antes de aceptar.</p></div>
+    </aside>
+
+    <section class="campaign-card" id="campaignCard">
+      <div class="mobile-campaign-progress"><span id="mobileStep">PASO 1 DE 5</span><div><i id="progressBar"></i></div></div>
+      <section class="campaign-step active" data-step="1">
+        <div class="step-heading"><p class="eyebrow">OBJETIVO</p><h2>¿Qué debe conseguir esta campaña?</h2><p>Una meta concreta ayuda a seleccionar productos y contenido.</p></div>
+        <form class="campaign-form" id="goalForm" novalidate>
+          <label>Nombre interno de la campaña <input id="campaignName" required minlength="5" maxlength="60" placeholder="Ej. Hallazgos para renovar tu escritorio"><small class="field-error"></small></label>
+          <fieldset><legend>Objetivo principal</legend><div class="goal-grid" id="goalChoices"><button type="button" class="selected" data-value="Dar a conocer productos"><span>◎</span><strong>Descubrimiento</strong><small>Presentar productos a nuevas personas.</small></button><button type="button" data-value="Generar ventas atribuidas"><span>↗</span><strong>Ventas</strong><small>Medir compras desde enlaces.</small></button><button type="button" data-value="Generar contenido original"><span>▶</span><strong>Contenido</strong><small>Obtener demostraciones útiles.</small></button><button type="button" data-value="Activar una temporada"><span>✦</span><strong>Temporada</strong><small>Impulsar una fecha o colección.</small></button></div></fieldset>
+          <label>Descripción para creadores <textarea id="campaignDescription" required minlength="30" maxlength="260" placeholder="Explica la idea, qué queremos comunicar y por qué puede interesarle a la comunidad."></textarea><span class="character-count"><b id="descriptionCount">0</b>/260</span><small class="field-error"></small></label>
+          <fieldset><legend>¿Quién puede participar?</legend><div class="radio-cards"><label><input type="radio" name="creatorAccess" value="Abierta" checked><span><b>Campaña abierta</b><small>Cualquier creador aprobado puede solicitar acceso.</small></span></label><label><input type="radio" name="creatorAccess" value="Por invitación"><span><b>Por invitación</b><small>Solo perfiles seleccionados.</small></span></label></div></fieldset>
+        </form>
+        <div class="campaign-actions"><a href="admin.html" class="secondary-button">Cancelar</a><button class="primary-button" data-next>CONTINUAR</button></div>
+      </section>
+
+      <section class="campaign-step" data-step="2" hidden>
+        <div class="step-heading"><p class="eyebrow">PRODUCTOS</p><h2>Elige una selección fácil de explicar.</h2><p>Puedes agregar hasta tres productos relacionados. Ninguno se modifica.</p></div>
+        <div class="product-picker-toolbar"><label>Buscar producto <input id="productSearch" placeholder="Nombre, vendedor o categoría"></label><span id="selectedCount">0 de 3 seleccionados</span></div>
+        <div class="campaign-products" id="campaignProducts"></div><p class="selection-error" id="productError"></p>
+        <div class="selection-summary" id="selectionSummary"><span>◇</span><div><strong>Aún no has elegido productos.</strong><p>Selecciona al menos uno para continuar.</p></div></div>
+        <div class="campaign-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" data-next>CONTINUAR</button></div>
+      </section>
+
+      <section class="campaign-step" data-step="3" hidden>
+        <div class="step-heading"><p class="eyebrow">COMISIÓN Y ATRIBUCIÓN</p><h2>Que cada peso tenga explicación.</h2><p>La propuesta se calcula sobre una venta completada. Los costos reales se definirán antes del lanzamiento.</p></div>
+        <div class="terms-layout"><form class="campaign-form terms-form" id="termsForm" novalidate><label>Comisión para el creador <span class="input-suffix"><input id="creatorCommission" required type="number" min="1" max="11" value="8"><b>% de la venta</b></span><small class="field-hint">Recomendación inicial: 8%. Nunca debe superar la comisión total de plataforma.</small><small class="field-error"></small></label><label>Periodo de atribución <select id="attributionDays" required><option value="1">1 día</option><option value="7" selected>7 días</option><option value="14">14 días</option><option value="30">30 días</option></select><small class="field-hint">Tiempo desde el clic para reconocer una compra válida.</small><small class="field-error"></small></label><div class="two-columns"><label>Fecha de inicio <input id="startDate" required type="date"><small class="field-error"></small></label><label>Fecha de cierre <input id="endDate" required type="date"><small class="field-error"></small></label></div><fieldset><legend>Cuándo se valida la comisión</legend><div class="validation-rule"><span>✓</span><p>Después de que el pedido sea pagado, entregado y no tenga devolución o disputa abierta.</p></div></fieldset></form>
+          <aside class="money-preview"><p class="eyebrow">EJEMPLO ECONÓMICO</p><h3>Venta de <span id="samplePrice">$500</span></h3><div><p><span>Vendedor recibe (88%)</span><b id="sellerAmount">$440</b></p><p><span>Creador recibe (<i id="creatorRate">8</i>%)</span><b id="creatorAmount">$40</b></p><p><span>Bazar Viral antes de costos</span><b id="platformAmount">$20</b></p></div><div class="economy-warning" id="economyWarning"><span>ⓘ</span><p>Queda 4% para operación antes de procesamiento de pago, soporte e impuestos.</p></div><small>Ejemplo demostrativo. No representa un pago ni una promesa de ingresos.</small></aside>
+        </div>
+        <div class="campaign-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" data-next>CONTINUAR</button></div>
+      </section>
+
+      <section class="campaign-step" data-step="4" hidden>
+        <div class="step-heading"><p class="eyebrow">CONTENIDO</p><h2>Da dirección sin quitar autenticidad.</h2><p>Define lo indispensable; el estilo y la voz pertenecen al creador.</p></div>
+        <form class="campaign-form" id="contentRulesForm" novalidate>
+          <fieldset><legend>Formatos aceptados</legend><div class="check-cards" id="formatChoices"><label><input type="checkbox" value="TikTok" checked><span><b>TikTok</b><small>Video vertical</small></span></label><label><input type="checkbox" value="Instagram Reels"><span><b>Reels</b><small>Video vertical</small></span></label><label><input type="checkbox" value="YouTube Shorts"><span><b>Shorts</b><small>Video vertical</small></span></label></div><small class="field-error" id="formatError"></small></fieldset>
+          <label>Lo que el contenido debe mostrar <textarea id="mustShow" required minlength="20" maxlength="240" placeholder="Ej. El producto en uso, un beneficio comprobable y una opinión honesta."></textarea><small class="field-error"></small></label>
+          <label>Lo que debe evitar <textarea id="mustAvoid" required minlength="15" maxlength="200" placeholder="Ej. Promesas exageradas, comparaciones falsas o información no comprobada."></textarea><small class="field-error"></small></label>
+          <div class="two-columns"><label>Duración sugerida <select id="videoLength" required><option value="">Selecciona</option><option>15 a 30 segundos</option><option>30 a 60 segundos</option><option>Hasta 90 segundos</option><option>Sin duración obligatoria</option></select><small class="field-error"></small></label><label>Fecha límite de publicación <input id="contentDeadline" required type="date"><small class="field-error"></small></label></div>
+          <div class="mandatory-disclosure"><span>OBLIGATORIO</span><div><strong>Aviso de relación comercial</strong><p>El creador deberá indicar claramente que puede recibir una comisión por ventas atribuidas.</p></div></div>
+          <label class="optional-reward"><input id="featuredReward" type="checkbox"><span><b>Incluir reconocimiento a contenido destacado</b><small>Permitirá destacar los videos más originales y útiles; cualquier premio económico deberá definirse por separado.</small></span></label>
+        </form>
+        <div class="campaign-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" data-next>REVISAR CAMPAÑA</button></div>
+      </section>
+
+      <section class="campaign-step" data-step="5" hidden>
+        <div class="step-heading"><p class="eyebrow">REVISIÓN FINAL</p><h2>Todo lo que verá un creador.</h2><p>Comprueba que las condiciones sean comprensibles sin explicaciones adicionales.</p></div>
+        <article class="campaign-review-card"><div class="review-cover"><span>CAMPAÑA DE DEMOSTRACIÓN</span><h3 id="reviewName">Nueva campaña</h3><p id="reviewDescription"></p></div><div class="review-body"><div class="review-products" id="reviewProducts"></div><dl><div><dt>Objetivo</dt><dd id="reviewGoal"></dd></div><div><dt>Participación</dt><dd id="reviewAccess"></dd></div><div><dt>Comisión</dt><dd><span id="reviewCommission">8%</span> por venta atribuida</dd></div><div><dt>Atribución</dt><dd id="reviewAttribution">7 días</dd></div><div><dt>Vigencia</dt><dd id="reviewDates"></dd></div><div><dt>Formatos</dt><dd id="reviewFormats"></dd></div><div><dt>Publicación límite</dt><dd id="reviewDeadline"></dd></div></dl><section><strong>El contenido debe mostrar</strong><p id="reviewMustShow"></p><strong>El contenido debe evitar</strong><p id="reviewMustAvoid"></p></section></div></article>
+        <div class="final-checks"><label><input id="clarityCheck" type="checkbox"><span>Confirmo que producto, comisión, atribución, vigencia y requisitos son claros.</span></label><label><input id="economyCheck" type="checkbox"><span>Entiendo que los porcentajes siguen siendo propuestas hasta validar costos, pagos e impuestos.</span></label><small id="finalError"></small></div>
+        <div class="campaign-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" id="saveCampaign">GUARDAR COMO BORRADOR</button></div>
+      </section>
+    </section>
+
+    <section class="campaign-complete" id="campaignComplete" hidden><div class="complete-icon">✓</div><p class="eyebrow">BORRADOR PREPARADO</p><h2>La campaña tiene reglas claras.</h2><p><strong id="completeName">Tu campaña</strong> quedó guardada únicamente en esta demostración. No se invitó a creadores ni se publicó información.</p><div class="complete-summary"><article><span>✓</span><strong>Objetivo definido</strong></article><article><span>✓</span><strong>Productos elegidos</strong></article><article><span>✓</span><strong>Economía visible</strong></article><article><span>✓</span><strong>Contenido orientado</strong></article></div><div class="complete-actions"><a class="primary-button" href="admin.html">VOLVER A CAMPAÑAS</a><button class="secondary-button" id="editCampaign">EDITAR BORRADOR</button></div><small>La publicación real requerirá una aprobación separada cuando exista el sistema conectado.</small></section>
+  </main>
+  <div class="campaign-toast" id="campaignToast" role="status"></div>
+  <script src="products-data.js"></script>
+  <script src="campana.js"></script>
+</body>
+</html>
