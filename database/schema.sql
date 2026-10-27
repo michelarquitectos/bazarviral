@@ -158,6 +158,15 @@ begin
   insert into public.account_roles (account_id, role)
   values (new.id, 'buyer');
 
+  if new.raw_user_meta_data ->> 'requested_role' in ('seller', 'creator') then
+    insert into public.account_roles (account_id, role)
+    values (
+      new.id,
+      (new.raw_user_meta_data ->> 'requested_role')::public.user_role
+    )
+    on conflict do nothing;
+  end if;
+
   return new;
 end;
 $$;
@@ -416,3 +425,9 @@ create policy "reviews_admin_only"
 on public.review_events for all to authenticated
 using (public.has_role('admin'))
 with check (public.has_role('admin'));
+
+-- Privilegios de API. RLS sigue siendo la autoridad final para cada fila.
+grant usage on schema public to anon, authenticated;
+grant select on public.seller_profiles, public.creator_profiles, public.products,
+  public.product_media, public.campaigns, public.creator_content to anon;
+grant select, insert, update, delete on all tables in schema public to authenticated;

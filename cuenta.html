@@ -1,10 +1,87 @@
-<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Acceso demostrativo a Bazar Viral para compradores, vendedores y creadores."><title>Tu cuenta — Bazar Viral</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="cuenta.css"></head><body>
-<header class="auth-header"><a href="index.html" class="back-link">← Volver al inicio</a><a class="brand" href="index.html"><img src="assets/bazar-viral-logo.png" alt="Bazar Viral"></a><span>Demostración segura</span></header>
-<main class="auth-shell"><section class="auth-intro"><p class="eyebrow">TU LUGAR EN BAZAR VIRAL</p><h1>Entra para descubrir, vender o crear.</h1><p>Un solo acceso, tres maneras de participar. Podrás cambiar de función más adelante.</p><div class="auth-benefits"><span>✓ Sin costo para registrarte</span><span>✓ Información pública y privada separada</span><span>✓ Condiciones visibles antes de participar</span></div><div class="security-note"><strong>Demostración local</strong><p>Usa datos inventados. Nada se envía a internet y la contraseña nunca se guarda.</p></div></section>
-<section class="auth-card"><div class="auth-tabs"><button class="active" data-view="register">Crear cuenta</button><button data-view="login">Iniciar sesión</button></div>
-<div id="registerView"><div class="step-indicator" aria-label="Progreso"><span class="active" data-dot="1">1</span><i></i><span data-dot="2">2</span><i></i><span data-dot="3">3</span></div><p class="step-caption" id="stepCaption">PASO 1 DE 3 · ELIGE TU FUNCIÓN</p>
-<section class="form-step active" data-step="1"><h2>¿Cómo quieres comenzar?</h2><div class="role-grid"><button class="role-card active" data-role="comprador"><span>🛍️</span><strong>Comprador</strong><small>Descubre productos, favoritos y pedidos.</small><b>Empezar comprando</b></button><button class="role-card" data-role="vendedor"><span>🏪</span><strong>Vendedor</strong><small>Publica productos y administra pedidos.</small><b>Abrir mi tienda</b></button><button class="role-card" data-role="creador"><span>🎬</span><strong>Creador</strong><small>Comparte contenido y campañas.</small><b>Crear contenido</b></button></div><div class="step-actions one"><button class="primary-button" data-next>CONTINUAR</button></div></section>
-<section class="form-step" data-step="2" hidden><h2>Crea tu acceso</h2><p class="step-help">Estos datos serán privados. Tu perfil público se configurará después.</p><form id="accessForm" class="auth-form" novalidate><label>Nombre <input id="registerName" required minlength="2" placeholder="¿Cómo te llamamos?"><small class="field-error"></small></label><label>Correo electrónico <input id="registerEmail" required type="email" placeholder="prueba@ejemplo.com"><small class="field-error"></small></label><label>Contraseña de demostración <span class="password-wrap"><input id="registerPassword" required minlength="6" type="password" placeholder="Mínimo 6 caracteres"><button type="button" class="toggle-password">Ver</button></span><small class="field-error"></small></label></form><div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" data-next>REVISAR INFORMACIÓN</button></div></section>
-<section class="form-step" data-step="3" hidden><h2>Confirma tu información</h2><div class="review-card"><div class="review-role"><span id="reviewIcon">🛍️</span><div><small>Función elegida</small><strong id="reviewRole">Comprador</strong></div><button id="editRole">Cambiar</button></div><dl><div><dt>Nombre</dt><dd id="reviewName">—</dd></div><div><dt>Correo privado</dt><dd id="reviewEmail">—</dd></div><div><dt>Será público</dt><dd id="publicInfo">Solo el nombre que elijas para tu perfil</dd></div><div><dt>Será privado</dt><dd>Correo, contraseña y datos de cuenta</dd></div></dl></div><div class="role-notice" id="roleNotice"></div><label class="check-row final-check"><input id="terms" type="checkbox"><span>Acepto las condiciones y el aviso de privacidad de esta demostración.</span></label><small class="terms-error" id="termsError"></small><div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" id="createAccount">CREAR CUENTA</button></div></section></div>
-<div id="loginView" hidden><p class="step-caption">ACCESO DE DEMOSTRACIÓN</p><h2>Inicia sesión</h2><form id="loginForm" class="auth-form"><label>Correo electrónico <input required type="email" placeholder="prueba@ejemplo.com"></label><label>Contraseña de demostración <span class="password-wrap"><input required minlength="6" type="password" placeholder="Mínimo 6 caracteres"><button type="button" class="toggle-password">Ver</button></span></label><div class="form-row"><label class="check-row"><input type="checkbox"><span>Recordar solo mi función</span></label><button type="button" class="text-button" id="forgotPassword">¿Olvidaste tu contraseña?</button></div><button class="primary-button submit-button" type="submit">INICIAR SESIÓN</button></form><p class="demo-access" id="loginMessage">Escribe cualquier correo válido y una contraseña inventada de 6 caracteres.</p></div></section>
-<section class="welcome-card" id="welcomeView" hidden><div class="welcome-icon" id="welcomeIcon">✓</div><p class="eyebrow">CUENTA DE DEMOSTRACIÓN</p><h2 id="welcomeTitle">¡Te damos la bienvenida!</h2><p id="welcomeCopy"></p><div class="next-steps" id="nextSteps"></div><div class="welcome-actions"><a class="primary-button" id="continueLink" href="catalogo.html">Continuar</a><button class="secondary-button" id="changeRole">Probar otra función</button></div><small>La contraseña no se guardó. Solo conservamos temporalmente la función para esta demostración.</small></section></main><script src="cuenta.js"></script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Crea tu cuenta o inicia sesión en Bazar Viral.">
+  <title>Tu cuenta — Bazar Viral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cuenta.css">
+</head>
+<body>
+  <header class="auth-header">
+    <a href="index.html" class="back-link">← Volver al inicio</a>
+    <a class="brand" href="index.html"><img src="assets/bazar-viral-logo.png" alt="Bazar Viral"></a>
+    <span>Acceso seguro</span>
+  </header>
+  <main class="auth-shell">
+    <section class="auth-intro">
+      <p class="eyebrow">TU LUGAR EN BAZAR VIRAL</p>
+      <h1>Entra para descubrir, vender o crear.</h1>
+      <p>Un solo acceso, tres maneras de participar. Podrás cambiar de función más adelante.</p>
+      <div class="auth-benefits"><span>✓ Sin costo para registrarte</span><span>✓ Información pública y privada separada</span><span>✓ Condiciones visibles antes de participar</span></div>
+      <div class="security-note"><strong>Cuenta protegida</strong><p>Tu acceso se procesa de forma segura. Nunca mostraremos tu correo ni tu contraseña en el perfil público.</p></div>
+    </section>
+    <section class="auth-card">
+      <div class="auth-tabs"><button class="active" data-view="register">Crear cuenta</button><button data-view="login">Iniciar sesión</button></div>
+      <div id="registerView">
+        <div class="step-indicator" aria-label="Progreso"><span class="active" data-dot="1">1</span><i></i><span data-dot="2">2</span><i></i><span data-dot="3">3</span></div>
+        <p class="step-caption" id="stepCaption">PASO 1 DE 3 · ELIGE TU FUNCIÓN</p>
+        <section class="form-step active" data-step="1">
+          <h2>¿Cómo quieres comenzar?</h2>
+          <div class="role-grid">
+            <button class="role-card active" data-role="comprador"><span>🛍️</span><strong>Comprador</strong><small>Descubre productos, favoritos y pedidos.</small><b>Empezar comprando</b></button>
+            <button class="role-card" data-role="vendedor"><span>🏪</span><strong>Vendedor</strong><small>Publica productos y administra pedidos.</small><b>Abrir mi tienda</b></button>
+            <button class="role-card" data-role="creador"><span>🎬</span><strong>Creador</strong><small>Comparte contenido y campañas.</small><b>Crear contenido</b></button>
+          </div>
+          <div class="step-actions one"><button class="primary-button" data-next>CONTINUAR</button></div>
+        </section>
+        <section class="form-step" data-step="2" hidden>
+          <h2>Crea tu acceso</h2>
+          <p class="step-help">Estos datos serán privados. Tu perfil público se configurará después.</p>
+          <form id="accessForm" class="auth-form" novalidate>
+            <label>Nombre <input id="registerName" required minlength="2" autocomplete="name" placeholder="¿Cómo te llamamos?"><small class="field-error"></small></label>
+            <label>Correo electrónico <input id="registerEmail" required type="email" autocomplete="email" placeholder="tu@correo.com"><small class="field-error"></small></label>
+            <label>Contraseña <span class="password-wrap"><input id="registerPassword" required minlength="8" type="password" autocomplete="new-password" placeholder="Mínimo 8 caracteres"><button type="button" class="toggle-password">Ver</button></span><small class="field-error"></small></label>
+          </form>
+          <div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" data-next>REVISAR INFORMACIÓN</button></div>
+        </section>
+        <section class="form-step" data-step="3" hidden>
+          <h2>Confirma tu información</h2>
+          <div class="review-card">
+            <div class="review-role"><span id="reviewIcon">🛍️</span><div><small>Función elegida</small><strong id="reviewRole">Comprador</strong></div><button id="editRole">Cambiar</button></div>
+            <dl><div><dt>Nombre</dt><dd id="reviewName">—</dd></div><div><dt>Correo privado</dt><dd id="reviewEmail">—</dd></div><div><dt>Será público</dt><dd id="publicInfo">Solo el nombre que elijas para tu perfil</dd></div><div><dt>Será privado</dt><dd>Correo, contraseña y datos de cuenta</dd></div></dl>
+          </div>
+          <div class="role-notice" id="roleNotice"></div>
+          <label class="check-row final-check"><input id="terms" type="checkbox"><span>Acepto las condiciones y el aviso de privacidad.</span></label>
+          <small class="terms-error" id="termsError"></small>
+          <p class="auth-status" id="registerMessage" role="status"></p>
+          <div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" id="createAccount">CREAR CUENTA</button></div>
+        </section>
+      </div>
+      <div id="loginView" hidden>
+        <p class="step-caption">ACCESO A TU CUENTA</p><h2>Inicia sesión</h2>
+        <form id="loginForm" class="auth-form">
+          <label>Correo electrónico <input id="loginEmail" required type="email" autocomplete="email" placeholder="tu@correo.com"></label>
+          <label>Contraseña <span class="password-wrap"><input id="loginPassword" required minlength="8" type="password" autocomplete="current-password" placeholder="Tu contraseña"><button type="button" class="toggle-password">Ver</button></span></label>
+          <div class="form-row"><span></span><button type="button" class="text-button" id="forgotPassword">¿Olvidaste tu contraseña?</button></div>
+          <button class="primary-button submit-button" type="submit">INICIAR SESIÓN</button>
+        </form>
+        <p class="auth-status" id="loginMessage" role="status"></p>
+      </div>
+    </section>
+    <section class="welcome-card" id="welcomeView" hidden>
+      <div class="welcome-icon" id="welcomeIcon">✓</div><p class="eyebrow" id="welcomeEyebrow">CUENTA CREADA</p><h2 id="welcomeTitle">¡Te damos la bienvenida!</h2><p id="welcomeCopy"></p>
+      <div class="next-steps" id="nextSteps"></div>
+      <div class="welcome-actions"><a class="primary-button" id="continueLink" href="catalogo.html">Continuar</a><button class="secondary-button" id="changeRole">Volver al acceso</button></div>
+      <small id="welcomeNote">Tu sesión se mantendrá protegida en este dispositivo.</small>
+    </section>
+  </main>
+  <script src="assets/vendor/supabase.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="cuenta.js"></script>
+</body>
+</html>
