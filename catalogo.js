@@ -1,4 +1,68 @@
-const products=window.BAZAR_PRODUCTS,money=new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0});const grid=document.querySelector("#catalogGrid"),search=document.querySelector("#catalogSearch"),count=document.querySelector("#catalogCount"),empty=document.querySelector("#catalogEmpty"),range=document.querySelector("#priceRange"),output=document.querySelector("#priceOutput"),sort=document.querySelector("#sortProducts"),toast=document.querySelector("#toast");
-function card(p){return `<article class="product-card"><a class="product-link" href="producto.html?id=${p.id}"><div class="product-art" style="background:linear-gradient(145deg,${p.colors[0]},${p.colors[1]})"><span class="product-badge">${p.badge}</span><span class="emoji">${p.emoji}</span></div><div class="product-copy"><small>${p.seller} · ★ ${p.rating}</small><span class="product-type">${p.type}</span><h3>${p.name}</h3><p>${p.description}</p></a><div class="price-row"><span class="price">${money.format(p.price)}</span><button class="add-button" data-id="${p.id}" data-name="${p.name}">Agregar</button></div></div></article>`}
-function render(){const term=search.value.trim().toLocaleLowerCase("es"),category=document.querySelector('input[name="category"]:checked').value,types=[...document.querySelectorAll('input[name="type"]:checked')].map(i=>i.value),max=Number(range.value);let visible=products.filter(p=>(category==="todos"||p.category===category)&&(!types.length||types.includes(p.type))&&p.price<=max&&(p.name+" "+p.seller+" "+p.categoryLabel).toLocaleLowerCase("es").includes(term));if(sort.value==="low")visible.sort((a,b)=>a.price-b.price);if(sort.value==="high")visible.sort((a,b)=>b.price-a.price);if(sort.value==="rating")visible.sort((a,b)=>b.rating-a.rating);if(sort.value==="recent")visible.reverse();grid.innerHTML=visible.map(card).join("");count.textContent=`${visible.length} ${visible.length===1?"producto":"productos"}`;empty.hidden=!!visible.length;bind()}
-function notify(t){toast.textContent=t;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2200)}function bind(){document.querySelectorAll(".add-button").forEach(b=>b.onclick=()=>{BazarCart.add(b.dataset.id);notify(`${b.dataset.name} se agregó al carrito`)})}document.querySelector(".catalog-search").onsubmit=e=>{e.preventDefault();render()};document.querySelectorAll('.filters input').forEach(i=>i.oninput=()=>{output.value=money.format(Number(range.value));render()});sort.onchange=render;document.querySelector("#clearFilters").onclick=()=>{search.value="";document.querySelector('input[value="todos"]').checked=true;document.querySelectorAll('input[name="type"]').forEach(i=>i.checked=false);range.value=1500;output.value=money.format(1500);sort.value="featured";render()};render();
+let products=[];
+const money=new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0});
+const grid=document.querySelector("#catalogGrid");
+const search=document.querySelector("#catalogSearch");
+const count=document.querySelector("#catalogCount");
+const empty=document.querySelector("#catalogEmpty");
+const range=document.querySelector("#priceRange");
+const output=document.querySelector("#priceOutput");
+const sort=document.querySelector("#sortProducts");
+const toast=document.querySelector("#toast");
+
+function escapeHTML(value){return String(value??"").replace(/[&<>'"]/g,character=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[character]))}
+function categoryKey(value){return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es").replace(/\s+/g,"-")}
+function normalizedName(value){return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es").trim()}
+function notify(text){toast.textContent=text;toast.classList.add("show");clearTimeout(notify.timer);notify.timer=setTimeout(()=>toast.classList.remove("show"),2400)}
+
+function card(product){
+  const detail=product.real?"Producto aprobado":"Ejemplo de catálogo";
+  return `<article class="product-card ${product.real?"real-product":"demo-product"}"><a class="product-link" href="${product.real?"#":"producto.html?id="+encodeURIComponent(product.id)}" data-real="${product.real?"true":"false"}><div class="product-art" style="background:linear-gradient(145deg,${product.colors[0]},${product.colors[1]})"><span class="product-badge">${escapeHTML(product.badge)}</span><span class="emoji">${escapeHTML(product.emoji)}</span></div><div class="product-copy"><small>${escapeHTML(product.seller)} · ${detail}</small><span class="product-type">${escapeHTML(product.type)}</span><h3>${escapeHTML(product.name)}</h3><p>${escapeHTML(product.description)}</p></a><div class="price-row"><span class="price">${money.format(product.price)}</span><button class="add-button" data-id="${escapeHTML(product.id)}" data-name="${escapeHTML(product.name)}" data-real="${product.real?"true":"false"}">${product.real?"VER DATOS":"AGREGAR DEMO"}</button></div></div></article>`;
+}
+
+function render(){
+  const term=search.value.trim().toLocaleLowerCase("es");
+  const category=document.querySelector('input[name="category"]:checked').value;
+  const types=[...document.querySelectorAll('input[name="type"]:checked')].map(input=>input.value);
+  const max=Number(range.value);
+  const visible=products.filter(product=>(category==="todos"||product.category===category)&&(!types.length||types.includes(product.type))&&product.price<=max&&(product.name+" "+product.seller+" "+product.categoryLabel).toLocaleLowerCase("es").includes(term));
+  if(sort.value==="low")visible.sort((a,b)=>a.price-b.price);
+  if(sort.value==="high")visible.sort((a,b)=>b.price-a.price);
+  if(sort.value==="rating")visible.sort((a,b)=>(b.rating||0)-(a.rating||0));
+  if(sort.value==="recent")visible.reverse();
+  grid.innerHTML=visible.map(card).join("");
+  count.textContent=`${visible.length} ${visible.length===1?"producto":"productos"}`;
+  empty.hidden=!!visible.length;
+  document.querySelectorAll('.product-link[data-real="true"]').forEach(link=>link.onclick=event=>{event.preventDefault();notify("La ficha pública real será el siguiente bloque")});
+  document.querySelectorAll(".add-button").forEach(button=>button.onclick=()=>{
+    if(button.dataset.real==="true"){notify("Ventas desactivadas: este producto todavía no acepta compras");return}
+    BazarCart.add(button.dataset.id);notify(`${button.dataset.name} se agregó al carrito de demostración`);
+  });
+}
+
+async function loadCatalog(){
+  const examples=(window.BAZAR_PRODUCTS||[]).map(product=>({...product,real:false,badge:`${product.badge} · EJEMPLO`}));
+  products=examples;
+  render();
+  try{
+    const{data,error}=await window.bazarSupabase.from("products").select("id,name,slug,description,delivery_note,category,kind,price_cents,stock,status,created_at,seller_profiles(store_name,status)").eq("status","approved").order("created_at",{ascending:false});
+    if(error)throw error;
+    const realProducts=data.filter(product=>product.seller_profiles?.status==="approved").map(product=>({
+      id:product.slug,name:product.name,description:product.description,seller:product.seller_profiles.store_name,
+      price:product.price_cents/100,type:product.kind==="digital"?"Digital":"Físico",category:categoryKey(product.category),categoryLabel:product.category,
+      rating:0,badge:"APROBADO · PRODUCTO REAL",emoji:product.kind==="digital"?"📚":"◇",colors:product.kind==="digital"?["#efd7a8","#b95745"]:["#efc37c","#b73e34"],
+      real:true,delivery:product.delivery_note,stock:product.stock
+    }));
+    const realNames=new Set(realProducts.map(product=>normalizedName(product.name)));
+    products=[...realProducts,...examples.filter(product=>!realNames.has(normalizedName(product.name)))];
+    render();
+  }catch(error){
+    console.error("No fue posible cargar los productos reales.",error);
+    notify("Mostrando ejemplos; no se pudieron cargar los productos reales");
+  }
+}
+
+document.querySelector(".catalog-search").onsubmit=event=>{event.preventDefault();render()};
+document.querySelectorAll(".filters input").forEach(input=>input.oninput=()=>{output.value=money.format(Number(range.value));render()});
+sort.onchange=render;
+document.querySelector("#clearFilters").onclick=()=>{search.value="";document.querySelector('input[value="todos"]').checked=true;document.querySelectorAll('input[name="type"]').forEach(input=>input.checked=false);range.value=1500;output.value=money.format(1500);sort.value="featured";render()};
+loadCatalog();
