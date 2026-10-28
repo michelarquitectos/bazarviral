@@ -34,6 +34,15 @@
       <section class="admin-section active" data-page="resumen">
         <div class="admin-heading"><div><p class="eyebrow">CENTRO DE CONTROL</p><h1>Buenos días. Todo bajo control.</h1><p>Lo urgente primero; el resto puede esperar.</p></div><button class="primary-button" data-jump="pendientes">REVISAR 7 PENDIENTES</button></div>
         <div class="demo-notice"><span>ⓘ</span><p><strong>Panel de demostración.</strong> Las decisiones solo cambian esta vista local. No hay usuarios, cobros ni publicaciones reales.</p></div>
+        <section class="admin-card live-data-card" aria-labelledby="liveDataTitle">
+          <div class="card-heading"><div><p class="eyebrow">DATOS REALES</p><h2 id="liveDataTitle">Estado de Supabase.</h2></div><small id="liveDataStatus">Consultando…</small></div>
+          <div class="live-data-grid">
+            <article><strong id="realAccounts">—</strong><span>Cuentas registradas</span></article>
+            <article><strong id="realSellerRequests">—</strong><span>Tiendas pendientes</span></article>
+            <article><strong id="realCreatorRequests">—</strong><span>Creadores pendientes</span></article>
+            <article><strong id="realProductRequests">—</strong><span>Productos pendientes</span></article>
+          </div>
+        </section>
         <div class="metric-grid"><article><div class="metric-icon red">◷</div><div><small>POR REVISAR</small><strong id="metricPending">7</strong><span>3 requieren atención hoy</span></div></article><article><div class="metric-icon gold">◇</div><div><small>PRODUCTOS ACTIVOS</small><strong>124</strong><span>+8 esta semana</span></div></article><article><div class="metric-icon green">♙</div><div><small>COMUNIDAD</small><strong>386</strong><span>92 vendedores · 71 creadores</span></div></article><article><div class="metric-icon purple">✦</div><div><small>CAMPAÑAS ACTIVAS</small><strong>6</strong><span>18 videos vinculados</span></div></article></div>
 
         <div class="dashboard-grid">
@@ -69,7 +78,8 @@
   <div class="admin-toast" id="adminToast" role="status"></div>
   <script src="assets/vendor/supabase.js"></script>
   <script src="supabase-client.js"></script>
-  <script src="admin-auth.js"></script>
+  <script src="admin-auth.js?v=2"></script>
   <script src="admin.js?v=4"></script>
+  <script src="admin-data.js?v=1"></script>
 </body>
 </html>

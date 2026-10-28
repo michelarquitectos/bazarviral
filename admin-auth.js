@@ -1,4 +1,4 @@
-(async()=>{
+window.adminAccessReady=(async()=>{
   const client=window.bazarSupabase;
   const accountPage="cuenta.html";
 
@@ -29,6 +29,7 @@
       await client.auth.signOut();
       window.location.replace(accountPage);
     });
+    return session;
   }catch(error){
     console.error("No fue posible verificar el acceso administrativo.",error);
     window.location.replace(`${accountPage}?error=sesion`);
