@@ -18,16 +18,59 @@ const activity=[
 const toast=document.querySelector("#adminToast");
 function notify(message){toast.textContent=message;toast.classList.add("show");clearTimeout(notify.timer);notify.timer=setTimeout(()=>toast.classList.remove("show"),2100)}
 function itemLabel(type){return {producto:"PRODUCTO",persona:"PERSONA",contenido:"CONTENIDO"}[type]}
-function queueCard(item){return `<article class="queue-item" data-type="${item.type}" data-id="${item.id}"><span class="queue-icon">${item.icon}</span><div class="queue-copy"><div><span class="urgency ${item.urgency}">${item.urgencyLabel}</span><small>${itemLabel(item.type)}</small></div><strong>${item.title}</strong><small>${item.owner} · ${item.meta}</small></div><button data-review-id="${item.id}">REVISAR</button></article>`}
+function escapeHTML(value){return String(value??"").replace(/[&<>'"]/g,character=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[character]))}
+function queueCard(item){return `<article class="queue-item ${item.real?"real-request":"demo-request"}" data-type="${escapeHTML(item.type)}" data-id="${escapeHTML(item.id)}"><span class="queue-icon">${escapeHTML(item.icon)}</span><div class="queue-copy"><div><span class="urgency ${item.real?"real":"normal"}">${item.real?"SOLICITUD REAL":"DEMOSTRACIÓN"}</span><small>${escapeHTML(itemLabel(item.type))}</small></div><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.owner)} · ${escapeHTML(item.meta)}</small></div><button data-review-id="${escapeHTML(item.id)}">REVISAR</button></article>`}
 function renderQueue(){const term=document.querySelector("#searchInput").value.trim().toLocaleLowerCase("es");const visible=reviewItems.filter(item=>(currentFilter==="todos"||item.type===currentFilter)&&(item.title+item.owner+item.meta).toLocaleLowerCase("es").includes(term));document.querySelector("#reviewQueue").innerHTML=visible.length?visible.map(queueCard).join(""):`<div class="empty-admin"><span>⌕</span><h2>No encontramos coincidencias.</h2><p>Prueba otro término o cambia el filtro.</p></div>`;bindReviewButtons()}
-function renderPriority(){document.querySelector("#priorityList").innerHTML=reviewItems.slice(0,4).map(item=>`<article class="priority-item"><span>${item.icon}</span><div><strong>${item.title}</strong><small>${item.owner} · ${itemLabel(item.type).toLowerCase()}</small></div><button data-review-id="${item.id}">REVISAR</button></article>`).join("");bindReviewButtons()}
+function renderPriority(){document.querySelector("#priorityList").innerHTML=reviewItems.slice(0,4).map(item=>`<article class="priority-item ${item.real?"real-request":""}"><span>${escapeHTML(item.icon)}</span><div><strong>${escapeHTML(item.title)}</strong><small>${item.real?"Solicitud real · ":""}${escapeHTML(item.owner)} · ${escapeHTML(itemLabel(item.type).toLowerCase())}</small></div><button data-review-id="${escapeHTML(item.id)}">REVISAR</button></article>`).join("");bindReviewButtons()}
 function renderActivity(){document.querySelector("#activityRows").innerHTML=activity.map(item=>`<div class="activity-row"><div><strong>${item.title}</strong><small>${item.detail}</small></div><span>${item.area}</span><span class="status-chip ${item.kind}">${item.status}</span><span>${item.time}</span></div>`).join("")}
 function showSection(name){document.querySelectorAll(".admin-section").forEach(section=>{const active=section.dataset.page===name;section.hidden=!active;section.classList.toggle("active",active)});document.querySelectorAll(".admin-nav button").forEach(button=>button.classList.toggle("active",button.dataset.section===name));document.querySelector("#adminSidebar").classList.remove("open");if(name==="pendientes")renderQueue();window.scrollTo({top:0,behavior:"smooth"})}
-function openDrawer(id){const item=reviewItems.find(entry=>entry.id===id);if(!item)return;selectedId=id;document.querySelector("#drawerType").textContent=itemLabel(item.type);document.querySelector("#drawerTitle").textContent=item.title;document.querySelector("#drawerSubtitle").textContent=`${item.owner} · ${item.meta}`;document.querySelector("#drawerPreview").textContent=item.preview;document.querySelector("#drawerDetails").innerHTML=Object.entries(item.details).map(([key,value])=>`<div><dt>${key}</dt><dd>${value}</dd></div>`).join("");document.querySelectorAll(".checklist input").forEach(input=>input.checked=false);document.querySelector("#reviewNote").value="";document.querySelector("#reviewDrawer").hidden=false;document.querySelector("#drawerBackdrop").hidden=false;document.body.style.overflow="hidden"}
+function openDrawer(id){const item=reviewItems.find(entry=>entry.id===id);if(!item)return;selectedId=id;document.querySelector("#drawerType").textContent=item.real?`${itemLabel(item.type)} · SOLICITUD REAL`:`${itemLabel(item.type)} · DEMOSTRACIÓN`;document.querySelector("#drawerTitle").textContent=item.title;document.querySelector("#drawerSubtitle").textContent=`${item.owner} · ${item.meta}`;document.querySelector("#drawerPreview").textContent=item.preview;document.querySelector("#drawerDetails").innerHTML=Object.entries(item.details).map(([key,value])=>`<div><dt>${escapeHTML(key)}</dt><dd>${escapeHTML(value)}</dd></div>`).join("");document.querySelectorAll(".checklist input").forEach(input=>input.checked=false);document.querySelector("#reviewNote").value="";document.querySelector("#approveItem").textContent=item.real?"APROBAR":"APROBAR DEMO";document.querySelector("#reviewDecisionNote").textContent=item.real?"Esta decisión se guardará en la base real.":"Esta decisión solo cambia la demostración local.";document.querySelector("#reviewDrawer").hidden=false;document.querySelector("#drawerBackdrop").hidden=false;document.body.style.overflow="hidden"}
 function closeDrawer(){document.querySelector("#reviewDrawer").hidden=true;document.querySelector("#drawerBackdrop").hidden=true;document.body.style.overflow="";selectedId=null}
 function bindReviewButtons(){document.querySelectorAll("[data-review-id]").forEach(button=>button.onclick=()=>openDrawer(button.dataset.reviewId))}
-function resolveItem(status){if(!selectedId)return;const index=reviewItems.findIndex(item=>item.id===selectedId);const item=reviewItems[index];reviewItems.splice(index,1);activity.unshift({title:status==="approved"?"Elemento aprobado en demostración":"Cambios solicitados en demostración",detail:item.title,area:itemLabel(item.type),status:status==="approved"?"Listo":"Cambios",kind:status==="approved"?"approved":"changes",time:"Ahora"});document.querySelector("#metricPending").textContent=reviewItems.length;document.querySelector("#navPending").textContent=reviewItems.length;document.querySelector("#allCount").textContent=reviewItems.length;closeDrawer();renderQueue();renderPriority();renderActivity();notify(status==="approved"?"Aprobación registrada solo en esta demostración":"Solicitud de cambios registrada solo en esta demostración")}
-document.querySelectorAll("[data-section]").forEach(button=>button.onclick=()=>showSection(button.dataset.section));document.querySelectorAll("[data-jump]").forEach(button=>button.onclick=()=>showSection(button.dataset.jump));document.querySelector("#sidebarToggle").onclick=()=>document.querySelector("#adminSidebar").classList.toggle("open");document.querySelector("#drawerClose").onclick=closeDrawer;document.querySelector("#drawerBackdrop").onclick=closeDrawer;document.querySelector("#approveItem").onclick=()=>resolveItem("approved");document.querySelector("#requestChanges").onclick=()=>resolveItem("changes");
+async function resolveItem(status){
+  if(!selectedId)return;
+  const index=reviewItems.findIndex(item=>item.id===selectedId);
+  const item=reviewItems[index];
+  if(status==="approved"&&item.real&&item.entityType==="product"&&!item.sellerApproved){
+    notify("Aprueba primero la tienda responsable de este producto");
+    return;
+  }
+  if(status==="approved"&&![...document.querySelectorAll(".checklist input")].every(input=>input.checked)){
+    notify("Completa las tres comprobaciones antes de aprobar");
+    return;
+  }
+  const note=document.querySelector("#reviewNote").value.trim();
+  if(status==="changes_requested"&&!note){
+    notify("Escribe qué debe corregirse antes de solicitar cambios");
+    return;
+  }
+  const actionButtons=[document.querySelector("#approveItem"),document.querySelector("#requestChanges")];
+  actionButtons.forEach(button=>button.disabled=true);
+  try{
+    if(item.real){
+      const session=await window.adminAccessReady;
+      const updateResult=await window.bazarSupabase.from(item.table).update({status}).eq("id",item.entityId).eq("status","pending");
+      if(updateResult.error)throw updateResult.error;
+      const eventResult=await window.bazarSupabase.from("review_events").insert({entity_type:item.entityType,entity_id:item.entityId,reviewer_id:session.user.id,from_status:"pending",to_status:status,reason:note||null});
+      if(eventResult.error)throw eventResult.error;
+    }
+    reviewItems.splice(index,1);
+    activity.unshift({title:status==="approved"?`Elemento aprobado${item.real?"":" en demostración"}`:`Cambios solicitados${item.real?"":" en demostración"}`,detail:item.title,area:itemLabel(item.type),status:status==="approved"?"Listo":"Cambios",kind:status==="approved"?"approved":"changes",time:"Ahora"});
+    const realPending=reviewItems.filter(entry=>entry.real).length;
+    document.querySelector("#metricPending").textContent=realPending;
+    document.querySelector("#navPending").textContent=realPending;
+    document.querySelector("#allCount").textContent=reviewItems.length;
+    closeDrawer();renderQueue();renderPriority();renderActivity();
+    if(item.real&&window.refreshAdminLiveData)await window.refreshAdminLiveData();
+    notify(status==="approved"?(item.real?"Aprobación guardada en la base real":"Aprobación registrada solo en esta demostración"):(item.real?"Cambios solicitados y guardados":"Solicitud de cambios registrada solo en esta demostración"));
+  }catch(error){
+    console.error("No fue posible guardar la decisión.",error);
+    notify("No se pudo guardar. La solicitud sigue pendiente");
+  }finally{
+    actionButtons.forEach(button=>button.disabled=false);
+  }
+}
+document.querySelectorAll("[data-section]").forEach(button=>button.onclick=()=>showSection(button.dataset.section));document.querySelectorAll("[data-jump]").forEach(button=>button.onclick=()=>showSection(button.dataset.jump));document.querySelector("#sidebarToggle").onclick=()=>document.querySelector("#adminSidebar").classList.toggle("open");document.querySelector("#drawerClose").onclick=closeDrawer;document.querySelector("#drawerBackdrop").onclick=closeDrawer;document.querySelector("#approveItem").onclick=()=>resolveItem("approved");document.querySelector("#requestChanges").onclick=()=>resolveItem("changes_requested");
 document.querySelectorAll("#queueFilters button").forEach(button=>button.onclick=()=>{document.querySelector("#queueFilters .active").classList.remove("active");button.classList.add("active");currentFilter=button.dataset.filter;renderQueue()});document.querySelector("#queueSort").onchange=event=>{if(event.target.value==="type")reviewItems.sort((a,b)=>a.type.localeCompare(b.type));else if(event.target.value==="newest")reviewItems.reverse();else reviewItems.sort((a,b)=>a.urgency.localeCompare(b.urgency));renderQueue()};document.querySelector("#adminSearch").onsubmit=event=>{event.preventDefault();showSection("pendientes");renderQueue()};document.querySelector("#searchInput").oninput=()=>{if(!document.querySelector('[data-page="pendientes"]').hidden)renderQueue()};document.addEventListener("keydown",event=>{if(event.ctrlKey&&event.key.toLowerCase()==="k"){event.preventDefault();document.querySelector("#searchInput").focus()}if(event.key==="Escape"&&!document.querySelector("#reviewDrawer").hidden)closeDrawer()});
 document.querySelector("#newCampaign").onclick=()=>location.href="campana.html";document.querySelector("#campaignGuide").onclick=()=>location.href="campana.html";document.querySelector("#clearActivityFilter").onclick=()=>notify("Ya estás viendo toda la actividad demostrativa");
 renderQueue();renderPriority();renderActivity();
