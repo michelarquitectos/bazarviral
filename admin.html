@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="auth-check">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -24,7 +24,7 @@
       <button data-section="campanas"><span>✦</span>Campañas</button>
       <button data-section="pedidos"><span>□</span>Pedidos</button>
     </nav>
-    <div class="sidebar-bottom"><button data-section="ajustes"><span>⚙</span>Ajustes</button><a href="index.html">← Ver sitio público</a><div class="admin-profile"><span>BV</span><div><strong>Administración</strong><small>Modo demostración</small></div></div></div>
+    <div class="sidebar-bottom"><button data-section="ajustes"><span>⚙</span>Ajustes</button><a href="index.html">← Ver sitio público</a><div class="admin-profile"><span>BV</span><div><strong>Administración</strong><small>Acceso protegido</small></div></div><button class="admin-signout" id="adminSignOut">Cerrar sesión</button></div>
   </aside>
 
   <main class="admin-main">
@@ -67,6 +67,9 @@
   <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
   <aside class="review-drawer" id="reviewDrawer" aria-label="Detalle de revisión" hidden><button class="drawer-close" id="drawerClose" aria-label="Cerrar">×</button><p class="eyebrow" id="drawerType">REVISIÓN</p><h2 id="drawerTitle">Elemento</h2><p class="drawer-subtitle" id="drawerSubtitle"></p><div class="drawer-preview" id="drawerPreview"></div><dl id="drawerDetails"></dl><div class="checklist"><h3>Lista de comprobación</h3><label><input type="checkbox"> Identidad y responsable claros</label><label><input type="checkbox"> Descripción y condiciones completas</label><label><input type="checkbox"> Sin afirmaciones engañosas</label></div><label class="review-note-label">Nota interna<textarea id="reviewNote" placeholder="Escribe una observación para esta demostración"></textarea></label><div class="drawer-actions"><button class="secondary-button" id="requestChanges">SOLICITAR CAMBIOS</button><button class="primary-button" id="approveItem">APROBAR DEMO</button></div><small>Ninguna decisión sale de este navegador.</small></aside>
   <div class="admin-toast" id="adminToast" role="status"></div>
-  <script src="admin.js?v=3"></script>
+  <script src="assets/vendor/supabase.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="admin-auth.js"></script>
+  <script src="admin.js?v=4"></script>
 </body>
 </html>
