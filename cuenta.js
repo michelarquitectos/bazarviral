@@ -18,7 +18,21 @@ function setStatus(element,message,type=""){element.textContent=message;element.
 function setBusy(button,busy,label){if(!button.dataset.label)button.dataset.label=button.textContent;button.disabled=busy;button.textContent=busy?label:button.dataset.label}
 function showWelcome(config,name="",options={}){authCard.hidden=true;intro.hidden=true;welcome.hidden=false;document.querySelector("#welcomeIcon").textContent=options.icon||config.icon;document.querySelector("#welcomeEyebrow").textContent=options.eyebrow||"CUENTA LISTA";document.querySelector("#welcomeTitle").textContent=options.title||config.title;document.querySelector("#welcomeCopy").textContent=options.copy||(name?`${name}, ${config.copy.charAt(0).toLowerCase()+config.copy.slice(1)}`:config.copy);document.querySelector("#nextSteps").innerHTML=config.steps.map(item=>`<article><span>${item[0]}</span><strong>${item[1]}</strong></article>`).join("");document.querySelector("#continueLink").href=config.link;document.querySelector("#continueLink").textContent=config.action;document.querySelector("#welcomeNote").textContent=options.note||"Tu sesión se mantendrá protegida en este dispositivo.";document.querySelector("#registerPassword").value=""}
 function roleFromDatabase(databaseRoles=[]){if(databaseRoles.includes("admin"))return"administrador";if(databaseRoles.includes("seller"))return"vendedor";if(databaseRoles.includes("creator"))return"creador";return"comprador"}
-async function finishSignedIn(user){const{data}=await client.from("account_roles").select("role").eq("account_id",user.id);role=roleFromDatabase((data||[]).map(item=>item.role));showWelcome(roles[role],user.user_metadata?.display_name||"",{eyebrow:"SESIÓN INICIADA",title:"¡Qué gusto tenerte de vuelta!"})}
+async function finishSignedIn(user){
+  const{data,error}=await client.from("account_roles").select("role").eq("account_id",user.id);
+  if(error){console.error("No fue posible consultar los accesos de la cuenta.",error);return}
+  const databaseRoles=(data||[]).map(item=>item.role);
+  role=roleFromDatabase(databaseRoles);
+  showWelcome(roles[role],user.user_metadata?.display_name||"",{eyebrow:"SESIÓN INICIADA",title:"Elige tu espacio",copy:"Tu cuenta tiene varios accesos. Entra al área que necesites; cada una mantiene sus funciones separadas.",note:"Los cobros y las ventas continúan desactivados."});
+  const destinations=[];
+  if(databaseRoles.includes("admin"))destinations.push({icon:"✓",title:"Administración",copy:"Revisa solicitudes y supervisa la plataforma.",href:"admin.html?v=6",action:"ABRIR PANEL"});
+  if(databaseRoles.includes("seller"))destinations.push({icon:"🏪",title:"Mi tienda",copy:"Consulta productos, inventario y estado de aprobación.",href:"panel-vendedor.html?v=5",action:"ABRIR PANEL"});
+  if(databaseRoles.includes("creator"))destinations.push({icon:"🎬",title:"Mi espacio creativo",copy:"Consulta campañas y contenido.",href:"panel-creador.html?v=1",action:"ABRIR ESPACIO"});
+  destinations.push({icon:"🛍️",title:"Explorar como comprador",copy:"Visita el catálogo y descubre productos.",href:"catalogo.html",action:"VER CATÁLOGO"});
+  document.querySelector("#nextSteps").innerHTML=destinations.map(item=>`<a class="account-destination" href="${item.href}"><span>${item.icon}</span><div><strong>${item.title}</strong><small>${item.copy}</small></div><b>${item.action} →</b></a>`).join("");
+  document.querySelector("#continueLink").href=destinations[0].href;
+  document.querySelector("#continueLink").textContent=destinations[0].action;
+}
 
 document.querySelectorAll(".role-card").forEach(button=>button.onclick=()=>selectRole(button.dataset.role));
 document.querySelectorAll("[data-next]").forEach(button=>button.onclick=event=>{event.preventDefault();if(step===2&&!validateAccess())return;showStep(step+1)});

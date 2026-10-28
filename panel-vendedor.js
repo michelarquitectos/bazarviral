@@ -35,6 +35,7 @@ function openProductDrawer(id){
 }
 
 function bindInteractions(){
+  document.querySelector(".account-link").href="cuenta.html?v=5";
   document.querySelectorAll("[data-tab],[data-open-tab]").forEach(button=>button.onclick=()=>openTab(button.dataset.tab||button.dataset.openTab));
   document.querySelector("#sellerProductSearch").oninput=renderProducts;
   document.querySelectorAll("[data-product-filter]").forEach(button=>button.onclick=()=>{productFilter=button.dataset.productFilter;document.querySelectorAll("[data-product-filter]").forEach(item=>item.classList.toggle("active",item===button));renderProducts()});
