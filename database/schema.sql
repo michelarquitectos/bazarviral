@@ -48,6 +48,7 @@ create table public.products (
   name text not null,
   slug text not null unique,
   description text not null,
+  delivery_note text not null,
   category text not null,
   kind public.product_kind not null,
   price_cents integer not null check (price_cents>0),
@@ -174,6 +175,24 @@ $$;
 create trigger on_auth_user_created
 after insert on auth.users
 for each row execute function public.handle_new_user();
+
+-- Solicitar un perfil de tienda concede el rol vendedor, nunca el rol admin.
+create or replace function public.assign_seller_role()
+returns trigger
+language plpgsql
+security definer set search_path = ''
+as $$
+begin
+  insert into public.account_roles (account_id, role)
+  values (new.account_id, 'seller')
+  on conflict do nothing;
+  return new;
+end;
+$$;
+
+create trigger on_seller_profile_created
+after insert on public.seller_profiles
+for each row execute function public.assign_seller_role();
 
 -- Funciones auxiliares para políticas. SECURITY DEFINER evita recursión de RLS.
 create or replace function public.has_role(requested_role public.user_role)

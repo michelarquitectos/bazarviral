@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="auth-check">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -15,7 +15,7 @@
 <body>
   <header class="seller-header">
     <a class="seller-brand" href="index.html"><img src="assets/bazar-viral-logo.png" alt="Bazar Viral"></a>
-    <div class="header-status"><span></span> Configuración de demostración</div>
+    <div class="header-status"><span></span> Solicitud real · ventas desactivadas</div>
     <a class="exit-link" href="cuenta.html">Guardar y salir</a>
   </header>
 
@@ -72,7 +72,7 @@
       </section>
 
       <section class="seller-step" data-step="4" hidden>
-        <div class="step-heading"><p class="eyebrow">PRIMER PRODUCTO</p><h2>Crea una publicación de prueba.</h2><p>Podrás revisarla completa antes de enviarla. Nada quedará a la venta todavía.</p></div>
+        <div class="step-heading"><p class="eyebrow">PRIMER PRODUCTO</p><h2>Crea tu primer borrador.</h2><p>Podrás revisarlo completo antes de enviarlo. Nada quedará a la venta todavía.</p></div>
         <div class="product-editor">
           <form class="seller-form" id="productForm" novalidate>
             <label>Nombre del producto <input id="productTitle" required minlength="4" maxlength="64" placeholder="Ej. Lámpara nube con luz cálida"><small class="field-error"></small></label>
@@ -84,17 +84,20 @@
           <aside class="product-draft"><div class="draft-image"><span>＋</span><b>Fotografía pendiente</b><small>Se añadirá en la siguiente etapa</small></div><p id="draftCategory">CATEGORÍA</p><h3 id="draftTitle">Tu producto</h3><strong id="draftPrice">$0 MXN</strong><small>Vista previa · No publicado</small></aside>
         </div>
         <div class="review-note"><span>✓</span><div><strong>Habrá una revisión antes de publicar</strong><p>Revisaremos claridad, categoría, imágenes y cumplimiento. Podrás corregir cualquier observación.</p></div></div>
-        <div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" id="submitStore">ENVIAR BORRADOR A REVISIÓN</button></div>
+        <p class="seller-submit-status" id="sellerSubmitStatus" role="status"></p><div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" id="submitStore">ENVIAR BORRADOR A REVISIÓN</button></div>
       </section>
     </section>
 
     <section class="completion-card" id="completionCard" hidden>
-      <div class="success-mark">✓</div><p class="eyebrow">BORRADOR COMPLETADO</p><h2>Tu tienda ya tiene una base profesional.</h2><p><strong id="completeStore">Tu tienda</strong> y su primer producto quedaron preparados para revisión. En esta demostración nada fue publicado ni enviado a internet.</p>
+      <div class="success-mark">✓</div><p class="eyebrow">SOLICITUD ENVIADA</p><h2>Tu tienda ya está en revisión.</h2><p><strong id="completeStore">Tu tienda</strong> y su primer producto quedaron guardados como pendientes. Todavía no están publicados ni aceptan ventas.</p>
       <div class="completion-summary"><article><span>✓</span><div><strong>Perfil público</strong><small>Preparado</small></div></article><article><span>✓</span><div><strong>Verificación</strong><small>Recorrido conocido</small></div></article><article><span>✓</span><div><strong>Condiciones</strong><small>Revisadas</small></div></article><article><span>◷</span><div><strong>Primer producto</strong><small>Pendiente de revisión</small></div></article></div>
       <div class="completion-actions"><a class="primary-button" href="panel-vendedor.html">IR A MI PANEL</a><button class="secondary-button" id="editDraft">EDITAR BORRADOR</button></div><small>Desde tu panel podrás organizar productos, pedidos y comisiones.</small>
     </section>
   </main>
-  <div class="save-toast" id="saveToast" role="status">Progreso guardado para esta demostración</div>
-  <script src="vendedor.js"></script>
+  <div class="save-toast" id="saveToast" role="status">Progreso guardado en esta sesión</div>
+  <script src="assets/vendor/supabase.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="seller-auth.js?v=1"></script>
+  <script src="vendedor.js?v=2"></script>
 </body>
 </html>

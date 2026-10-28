@@ -61,8 +61,27 @@ productTitle.addEventListener("input",()=>document.querySelector("#draftTitle").
 productCategory.addEventListener("change",()=>document.querySelector("#draftCategory").textContent=(productCategory.value||"Categoría").toUpperCase());
 productPrice.addEventListener("input",()=>document.querySelector("#draftPrice").textContent=`$${Number(productPrice.value||0).toLocaleString("es-MX")} MXN`);
 
-document.querySelector("#submitStore").addEventListener("click",()=>{
+document.querySelector("#submitStore").addEventListener("click",async()=>{
   if(!validateForm("#productForm"))return;
+  const button=document.querySelector("#submitStore");
+  const status=document.querySelector("#sellerSubmitStatus");
+  button.disabled=true;button.textContent="ENVIANDO…";status.textContent="";status.className="seller-submit-status";
+  const session=await window.sellerAccessReady;
+  if(!session){button.disabled=false;button.textContent="ENVIAR BORRADOR A REVISIÓN";return}
+  const client=window.bazarSupabase;
+  const storeData={account_id:session.user.id,store_name:storeName.value.trim(),slug:storeSlug.value.trim(),bio:storeBio.value.trim(),category:selectedCategory,status:"pending"};
+  const{data:seller,error:sellerError}=await client.from("seller_profiles").upsert(storeData,{onConflict:"account_id"}).select("id").single();
+  if(sellerError){
+    status.textContent=sellerError.code==="23505"?"Esa dirección pública ya está ocupada. Elige otra.":"No pudimos guardar la tienda. Revisa la información e inténtalo de nuevo.";
+    status.classList.add("error");button.disabled=false;button.textContent="ENVIAR BORRADOR A REVISIÓN";return;
+  }
+  await client.from("profiles").update({city:storeCity.value.trim()}).eq("id",session.user.id);
+  const productSlug=`${storeSlug.value.trim()}-${slugify(productTitle.value)}-${Date.now().toString(36)}`;
+  const productData={seller_id:seller.id,name:productTitle.value.trim(),slug:productSlug,description:document.querySelector("#productDescription").value.trim(),delivery_note:document.querySelector("#productDelivery").value,category:productCategory.value,kind:document.querySelector("#productType").value,price_cents:Math.round(Number(productPrice.value)*100),stock:Number(document.querySelector("#productStock").value),status:"pending"};
+  const{error:productError}=await client.from("products").insert(productData);
+  if(productError){
+    status.textContent="La tienda se guardó, pero el producto necesita otro intento.";status.classList.add("error");button.disabled=false;button.textContent="ENVIAR BORRADOR A REVISIÓN";return;
+  }
   sessionStorage.setItem("bazarViralSellerDemo",JSON.stringify({store:storeName.value.trim(),category:selectedCategory,product:productTitle.value.trim()}));
   document.querySelector("#completeStore").textContent=storeName.value.trim();
   sellerCard.hidden=true;document.querySelector(".seller-sidebar").hidden=true;completionCard.hidden=false;window.scrollTo({top:0,behavior:"smooth"});
