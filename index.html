@@ -14,12 +14,12 @@
     <header class="site-header">
       <button class="icon-button menu-button" aria-label="Abrir menú">☰</button>
       <nav class="desktop-nav" aria-label="Navegación principal">
-        <a class="active" href="#inicio">Inicio</a><a href="catalogo.html">Productos</a><a href="catalogo.html#filters">Categorías</a><a href="comunidad.html">Comunidad</a>
+        <a class="active" href="#inicio">Inicio</a><a href="catalogo.html?v=4">Productos</a><a href="catalogo.html?v=4#filters">Categorías</a><a href="comunidad.html">Comunidad</a>
       </nav>
       <a class="brand" href="#inicio" aria-label="Bazar Viral, inicio"><img src="assets/bazar-viral-logo.png" alt="Bazar Viral" /></a>
       <div class="header-actions">
         <button class="icon-button" aria-label="Favoritos">♡</button>
-        <a class="icon-button account-link" href="cuenta.html" aria-label="Tu cuenta">♙</a>
+        <a class="icon-button account-link" href="cuenta.html?v=7" aria-label="Tu cuenta">♙</a>
         <button class="icon-button cart-button" aria-label="Carrito">🛒<span>0</span></button>
       </div>
     </header>
@@ -40,7 +40,7 @@
         <div class="hero-stage" aria-label="Selección viral de la semana">
           <div class="glow"></div>
           <div class="lamp" aria-hidden="true"><div class="lamp-shade"></div><div class="lamp-stem"></div><div class="lamp-base"></div></div>
-          <div class="hero-note"><span>LO MÁS VIRAL</span><strong>Lámpara hongo ámbar</strong><small>Un rincón más cálido en segundos.</small><a href="#productos">Ver producto →</a></div>
+          <div class="hero-note"><span id="heroProductBadge">PRODUCTO REAL</span><strong id="heroProductName">Lámpara hongo ámbar</strong><small id="heroProductCopy">Producto aprobado de una tienda verificada.</small><a id="heroProductLink" href="#productos">Ver producto →</a></div>
           <span class="spark spark-one">✦</span><span class="spark spark-two">✦</span>
         </div>
       </section>
@@ -66,7 +66,7 @@
       <section class="community-section" id="comunidad">
         <div class="shell community-layout">
           <div class="community-copy"><p class="eyebrow">LA COMUNIDAD LO ESTÁ HACIENDO VIRAL</p><h2>Lo vimos, lo probamos, te lo contamos.</h2><p>Videos originales de personas que muestran los productos como realmente se usan. Algunos enlaces pueden generar una comisión para el creador, sin costo adicional para ti.</p><a class="primary-button" href="comunidad.html">Entrar a Comunidad</a></div>
-          <article class="video-card" id="video-demo"><div class="video-visual"><button class="play-button" aria-label="Reproducir video">▶</button><span class="affiliate-label">Enlace de afiliado</span><div class="mini-lamp"><div></div><i></i></div></div><div class="video-info"><div><strong>“La lámpara que cambió mi escritorio”</strong><span>Mariana R. · 0:42</span></div><button class="save-button" aria-label="Guardar video">♡</button></div><a href="#productos">Ver lámpara hongo ámbar · $899 MXN →</a></article>
+          <article class="video-card" id="video-demo"><div class="video-visual"><button class="play-button" aria-label="Reproducir video">▶</button><span class="affiliate-label">Ejemplo de contenido</span><div class="mini-lamp"><div></div><i></i></div></div><div class="video-info"><div><strong>“La lámpara que cambió mi escritorio”</strong><span>Demostración · No es una reseña real</span></div><button class="save-button" aria-label="Guardar video">♡</button></div><a id="communityProductLink" href="#productos">Ver producto real →</a></article>
         </div>
       </section>
 
@@ -74,8 +74,8 @@
     </main>
 
     <footer><div class="shell footer-inner"><img src="assets/bazar-viral-logo.png" alt="" /><p>Una primera versión demostrativa de Bazar Viral.</p><div><a href="confianza.html#help">Ayuda</a><a href="confianza.html#terms">Condiciones</a><a href="confianza.html#privacy">Privacidad</a></div></div></footer>
-    <nav class="mobile-nav" aria-label="Navegación móvil"><a class="active" href="#inicio"><span>⌂</span>Inicio</a><a href="catalogo.html"><span>⌕</span>Buscar</a><a href="comunidad.html"><span>◎</span>Comunidad</a><a href="#"><span>♡</span>Favoritos</a><a href="cuenta.html"><span>♙</span>Cuenta</a></nav>
+    <nav class="mobile-nav" aria-label="Navegación móvil"><a class="active" href="#inicio"><span>⌂</span>Inicio</a><a href="catalogo.html?v=4"><span>⌕</span>Buscar</a><a href="comunidad.html"><span>◎</span>Comunidad</a><a href="#"><span>♡</span>Favoritos</a><a href="cuenta.html?v=7"><span>♙</span>Cuenta</a></nav>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="products-data.js"></script><script src="cart-store.js"></script><script src="app.js"></script>
+    <script src="assets/vendor/supabase.js"></script><script src="supabase-client.js"></script><script src="products-data.js"></script><script src="cart-store.js"></script><script src="app.js?v=2"></script>
   </body>
 </html>
