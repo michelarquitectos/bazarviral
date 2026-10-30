@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="vendedor.css">
-  <link rel="stylesheet" href="vendedor-responsive.css">
+  <link rel="stylesheet" href="vendedor-responsive.css"><link rel="stylesheet" href="vendedor-images.css?v=1">
 </head>
 <body>
   <header class="seller-header">
@@ -80,8 +80,9 @@
             <div class="two-columns"><label>Precio en MXN <input id="productPrice" required type="number" min="1" max="999999" placeholder="499"><small class="field-error"></small></label><label>Disponibilidad <input id="productStock" required type="number" min="1" max="9999" placeholder="10"><small class="field-error"></small></label></div>
             <label>Descripción breve <textarea id="productDescription" required minlength="25" maxlength="240" placeholder="Explica qué es, para quién sirve y por qué llama la atención."></textarea><small class="field-error"></small></label>
             <label>Entrega <select id="productDelivery" required><option value="">Selecciona una condición</option><option>Envío de 3 a 5 días</option><option>Producto hecho bajo pedido</option><option>Descarga inmediata</option></select><small class="field-error"></small></label>
+            <label>Fotografía principal <input id="productImage" type="file" accept="image/jpeg,image/png,image/webp" required><small class="field-hint">JPG, PNG o WebP · máximo 5 MB.</small><small class="field-error"></small></label>
           </form>
-          <aside class="product-draft"><div class="draft-image"><span>＋</span><b>Fotografía pendiente</b><small>Se añadirá en la siguiente etapa</small></div><p id="draftCategory">CATEGORÍA</p><h3 id="draftTitle">Tu producto</h3><strong id="draftPrice">$0 MXN</strong><small>Vista previa · No publicado</small></aside>
+          <aside class="product-draft"><div class="draft-image"><img id="draftImagePreview" alt="Vista previa del producto" hidden><span id="draftImageMark">＋</span><b id="draftImageLabel">Selecciona una fotografía</b><small id="draftImageHint">Se revisará antes de publicarse</small></div><p id="draftCategory">CATEGORÍA</p><h3 id="draftTitle">Tu producto</h3><strong id="draftPrice">$0 MXN</strong><small>Vista previa · No publicado</small></aside>
         </div>
         <div class="review-note"><span>✓</span><div><strong>Habrá una revisión antes de publicar</strong><p>Revisaremos claridad, categoría, imágenes y cumplimiento. Podrás corregir cualquier observación.</p></div></div>
         <p class="seller-submit-status" id="sellerSubmitStatus" role="status"></p><div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" id="submitStore">ENVIAR BORRADOR A REVISIÓN</button></div>
@@ -98,6 +99,6 @@
   <script src="assets/vendor/supabase.js"></script>
   <script src="supabase-client.js"></script>
   <script src="seller-auth.js?v=1"></script>
-  <script src="vendedor.js?v=2"></script>
+  <script src="vendedor.js?v=5"></script>
 </body>
 </html>

@@ -15,7 +15,7 @@
   async function loadRealQueue(){
     const[sellersResult,productsResult]=await Promise.all([
       window.bazarSupabase.from("seller_profiles").select("id,store_name,slug,bio,category,status,created_at").eq("status","pending").order("created_at",{ascending:false}),
-      window.bazarSupabase.from("products").select("id,name,description,delivery_note,category,kind,price_cents,currency,stock,status,created_at,seller_profiles(store_name,status)").eq("status","pending").order("created_at",{ascending:false})
+      window.bazarSupabase.from("products").select("id,name,description,delivery_note,category,kind,price_cents,currency,stock,status,created_at,seller_profiles(store_name,status),product_media(storage_path,alt_text,position)").eq("status","pending").order("created_at",{ascending:false})
     ]);
     if(sellersResult.error)throw sellersResult.error;
     if(productsResult.error)throw productsResult.error;
@@ -30,7 +30,7 @@
       ...productsResult.data.map(product=>({
         id:`real-product-${product.id}`,entityId:product.id,entityType:"product",table:"products",real:true,sellerApproved:product.seller_profiles?.status==="approved",
         type:"producto",icon:product.kind==="digital"?"📚":"◇",title:product.name,owner:product.seller_profiles?.store_name||"Tienda",
-        meta:`${product.kind==="digital"?"Producto digital":"Producto físico"} · ${product.category}`,urgency:"high",urgencyLabel:"REAL",preview:product.kind==="digital"?"📚":"◇",
+        meta:`${product.kind==="digital"?"Producto digital":"Producto físico"} · ${product.category}`,urgency:"high",urgencyLabel:"REAL",preview:product.kind==="digital"?"📚":"◇",imageUrl:product.product_media?.[0]?.storage_path?window.bazarSupabase.storage.from("product-images").getPublicUrl(product.product_media[0].storage_path).data.publicUrl:null,imageAlt:product.product_media?.[0]?.alt_text||product.name,
         details:{"Tienda":product.seller_profiles?.store_name||"Tienda","Estado de la tienda":product.seller_profiles?.status==="approved"?"Aprobada":"Pendiente de aprobación","Precio":money(product.price_cents),"Inventario":product.stock??"Sin límite","Entrega":product.delivery_note,"Descripción":product.description,"Enviado":createdLabel(product.created_at)}
       }))
     ];

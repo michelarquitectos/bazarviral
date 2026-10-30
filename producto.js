@@ -20,7 +20,7 @@ function renderRelated(currentName) {
 function commonRender(product) {
   document.title = `${product.name} — Bazar Viral`;
   set("#crumb", product.name); set("#seller", product.seller); set("#sellerInitial", product.seller.charAt(0).toUpperCase());
-  set("#categoryLabel", product.categoryLabel.toUpperCase()); set("#productName", product.name); set("#productPrice", money.format(product.price)); set("#description", product.description); set("#artEmoji", product.emoji);
+  set("#categoryLabel", product.categoryLabel.toUpperCase()); set("#productName", product.name); set("#productPrice", money.format(product.price)); set("#description", product.description); set("#artEmoji", product.emoji);if(product.imageUrl){const image=document.createElement("img");image.src=product.imageUrl;image.alt=product.imageAlt||product.name;document.querySelector("#mainArt").prepend(image)}
   document.querySelector("#mainArt").style.background = `linear-gradient(145deg,${product.colors[0]},${product.colors[1]})`;
   document.querySelector("#details").innerHTML = product.details.map(detail => `<li>${detail}</li>`).join("");
   document.querySelector("#thumbs").innerHTML = product.colors.concat(product.colors.slice(0, 2)).map((color, index) => `<button class="thumb ${index === 0 ? "active" : ""}" style="background:${color}">${product.emoji}</button>`).join("");
@@ -43,7 +43,7 @@ function renderExample(product) {
 function renderReal(record) {
   const kind = record.kind === "digital" ? "Digital" : "Físico";
   const stock = record.stock == null ? "Disponibilidad por confirmar" : `${record.stock} ${record.stock === 1 ? "unidad disponible" : "unidades disponibles"}`;
-  const product = { name: record.name, seller: record.seller_profiles.store_name, categoryLabel: record.category, description: record.description, price: record.price_cents / 100, emoji: emojiFor(record.kind), colors: colorsFor(record.kind), details: [`Tipo: ${kind}`, `Entrega: ${record.delivery_note}`, stock, "Publicado por una tienda aprobada en Bazar Viral"] };
+  const media=record.product_media?.sort((a,b)=>a.position-b.position)?.[0];const product = { name: record.name, seller: record.seller_profiles.store_name, categoryLabel: record.category, description: record.description, price: record.price_cents / 100, emoji: emojiFor(record.kind), colors: colorsFor(record.kind),imageUrl:media?.storage_path?window.bazarSupabase.storage.from("product-images").getPublicUrl(media.storage_path).data.publicUrl:null,imageAlt:media?.alt_text, details: [`Tipo: ${kind}`, `Entrega: ${record.delivery_note}`, stock, "Publicado por una tienda aprobada en Bazar Viral"] };
   commonRender(product);
   document.querySelector("#realStatus").hidden = false;
   set("#sellerStatus", "Tienda aprobada");
@@ -63,7 +63,7 @@ function renderReal(record) {
 async function load() {
   if (!realId) { renderExample(examples.find(item => item.id === params.get("id")) || examples[0]); return; }
   try {
-    const { data, error } = await window.bazarSupabase.from("products").select("id,name,description,delivery_note,category,kind,price_cents,stock,status,seller_profiles(store_name,slug,status)").eq("id", realId).eq("status", "approved").single();
+    const { data, error } = await window.bazarSupabase.from("products").select("id,name,description,delivery_note,category,kind,price_cents,stock,status,seller_profiles(store_name,slug,status),product_media(storage_path,alt_text,position)").eq("id", realId).eq("status", "approved").single();
     if (error || !data || data.seller_profiles?.status !== "approved") throw error || new Error("Producto no disponible");
     renderReal(data);
   } catch (error) {

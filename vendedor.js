@@ -60,6 +60,13 @@ const productPrice=document.querySelector("#productPrice");
 productTitle.addEventListener("input",()=>document.querySelector("#draftTitle").textContent=productTitle.value||"Tu producto");
 productCategory.addEventListener("change",()=>document.querySelector("#draftCategory").textContent=(productCategory.value||"Categoría").toUpperCase());
 productPrice.addEventListener("input",()=>document.querySelector("#draftPrice").textContent=`$${Number(productPrice.value||0).toLocaleString("es-MX")} MXN`);
+const productImage=document.querySelector("#productImage");
+productImage.addEventListener("change",()=>{
+  const file=productImage.files[0],error=productImage.closest("label").querySelector(".field-error"),preview=document.querySelector("#draftImagePreview");
+  if(!file)return;
+  if(file.size>5242880){productImage.value="";error.textContent="La imagen debe pesar menos de 5 MB.";return}
+  error.textContent="";preview.src=URL.createObjectURL(file);preview.hidden=false;document.querySelector("#draftImageMark").hidden=true;document.querySelector("#draftImageLabel").hidden=true;document.querySelector("#draftImageHint").hidden=true;
+});
 
 document.querySelector("#submitStore").addEventListener("click",async()=>{
   if(!validateForm("#productForm"))return;
@@ -69,8 +76,11 @@ document.querySelector("#submitStore").addEventListener("click",async()=>{
   const session=await window.sellerAccessReady;
   if(!session){button.disabled=false;button.textContent="ENVIAR BORRADOR A REVISIÓN";return}
   const client=window.bazarSupabase;
-  const storeData={account_id:session.user.id,store_name:storeName.value.trim(),slug:storeSlug.value.trim(),bio:storeBio.value.trim(),category:selectedCategory,status:"pending"};
-  const{data:seller,error:sellerError}=await client.from("seller_profiles").upsert(storeData,{onConflict:"account_id"}).select("id").single();
+  const{data:existingSeller,error:lookupError}=await client.from("seller_profiles").select("id,status").eq("account_id",session.user.id).maybeSingle();
+  if(lookupError){status.textContent="No pudimos consultar tu tienda.";status.classList.add("error");button.disabled=false;button.textContent="ENVIAR BORRADOR A REVISIÓN";return}
+  const storeData={account_id:session.user.id,store_name:storeName.value.trim(),slug:storeSlug.value.trim(),bio:storeBio.value.trim(),category:selectedCategory};
+  const sellerResult=existingSeller?await client.from("seller_profiles").update(storeData).eq("id",existingSeller.id).select("id,status").single():await client.from("seller_profiles").insert({...storeData,status:"pending"}).select("id,status").single();
+  const{data:seller,error:sellerError}=sellerResult;
   if(sellerError){
     status.textContent=sellerError.code==="23505"?"Esa dirección pública ya está ocupada. Elige otra.":"No pudimos guardar la tienda. Revisa la información e inténtalo de nuevo.";
     status.classList.add("error");button.disabled=false;button.textContent="ENVIAR BORRADOR A REVISIÓN";return;
@@ -78,13 +88,30 @@ document.querySelector("#submitStore").addEventListener("click",async()=>{
   await client.from("profiles").update({city:storeCity.value.trim()}).eq("id",session.user.id);
   const productSlug=`${storeSlug.value.trim()}-${slugify(productTitle.value)}-${Date.now().toString(36)}`;
   const productData={seller_id:seller.id,name:productTitle.value.trim(),slug:productSlug,description:document.querySelector("#productDescription").value.trim(),delivery_note:document.querySelector("#productDelivery").value,category:productCategory.value,kind:document.querySelector("#productType").value,price_cents:Math.round(Number(productPrice.value)*100),stock:Number(document.querySelector("#productStock").value),status:"pending"};
-  const{error:productError}=await client.from("products").insert(productData);
+  const{data:createdProduct,error:productError}=await client.from("products").insert(productData).select("id").single();
   if(productError){
     status.textContent="La tienda se guardó, pero el producto necesita otro intento.";status.classList.add("error");button.disabled=false;button.textContent="ENVIAR BORRADOR A REVISIÓN";return;
   }
+  const imageFile=productImage.files[0];
+  const extension=(imageFile.name.split(".").pop()||"jpg").toLowerCase();
+  const storagePath=`${session.user.id}/${createdProduct.id}/principal.${extension}`;
+  const{error:uploadError}=await client.storage.from("product-images").upload(storagePath,imageFile,{cacheControl:"3600",upsert:false,contentType:imageFile.type});
+  if(uploadError){
+    status.textContent="El producto se guardó, pero no pudimos subir la fotografía. Activa primero el almacenamiento en Supabase y vuelve a intentarlo.";status.classList.add("error");button.disabled=false;button.textContent="ENVIAR BORRADOR A REVISIÓN";return;
+  }
+  const{error:mediaError}=await client.from("product_media").insert({product_id:createdProduct.id,storage_path:storagePath,alt_text:`Fotografía de ${productTitle.value.trim()}`,position:0});
+  if(mediaError){status.textContent="La fotografía subió, pero no pudo vincularse al producto.";status.classList.add("error");button.disabled=false;button.textContent="ENVIAR BORRADOR A REVISIÓN";return}
   sessionStorage.setItem("bazarViralSellerDemo",JSON.stringify({store:storeName.value.trim(),category:selectedCategory,product:productTitle.value.trim()}));
   document.querySelector("#completeStore").textContent=storeName.value.trim();
   sellerCard.hidden=true;document.querySelector(".seller-sidebar").hidden=true;completionCard.hidden=false;window.scrollTo({top:0,behavior:"smooth"});
 });
 document.querySelector("#editDraft").addEventListener("click",()=>{completionCard.hidden=true;document.querySelector(".seller-sidebar").hidden=false;sellerCard.hidden=false;currentStep=4;updateProgress()});
-updateProgress();
+async function initializeSellerFlow(){
+  const productOnly=new URLSearchParams(location.search).get("nuevo")==="1";
+  if(!productOnly){updateProgress();return}
+  const session=await window.sellerAccessReady;if(!session)return;
+  const[{data:seller},{data:profile}]=await Promise.all([window.bazarSupabase.from("seller_profiles").select("store_name,slug,bio,category").eq("account_id",session.user.id).maybeSingle(),window.bazarSupabase.from("profiles").select("city").eq("id",session.user.id).maybeSingle()]);
+  if(seller){storeName.value=seller.store_name;storeSlug.value=seller.slug;storeBio.value=seller.bio;storeCity.value=profile?.city||"";selectedCategory=seller.category;document.querySelector("#previewName").textContent=seller.store_name;document.querySelector("#previewBio").textContent=seller.bio;document.querySelector("#previewCity").textContent=profile?.city||"México";document.querySelector("#previewCategory").textContent=seller.category;currentStep=4}
+  updateProgress();
+}
+initializeSellerFlow();

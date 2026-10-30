@@ -17,7 +17,8 @@ function notify(text){toast.textContent=text;toast.classList.add("show");clearTi
 function card(product){
   const detail=product.real?"Producto aprobado":"Ejemplo de catálogo";
   const href=product.real?`producto.html?real=${encodeURIComponent(product.id)}`:`producto.html?id=${encodeURIComponent(product.id)}`;
-  return `<article class="product-card ${product.real?"real-product":"demo-product"}"><a class="product-link" href="${href}"><div class="product-art" style="background:linear-gradient(145deg,${product.colors[0]},${product.colors[1]})"><span class="product-badge">${escapeHTML(product.badge)}</span><span class="emoji">${escapeHTML(product.emoji)}</span></div><div class="product-copy"><small>${escapeHTML(product.seller)} · ${detail}</small><span class="product-type">${escapeHTML(product.type)}</span><h3>${escapeHTML(product.name)}</h3><p>${escapeHTML(product.description)}</p></a><div class="price-row"><span class="price">${money.format(product.price)}</span><button class="add-button" data-id="${escapeHTML(product.id)}" data-name="${escapeHTML(product.name)}" data-real="${product.real?"true":"false"}">${product.real?"VER DATOS":"AGREGAR DEMO"}</button></div></div></article>`;
+  const image=product.imageUrl?`<img src="${escapeHTML(product.imageUrl)}" alt="${escapeHTML(product.imageAlt||product.name)}">`:"";
+  return `<article class="product-card ${product.real?"real-product":"demo-product"}"><a class="product-link" href="${href}"><div class="product-art" style="background:linear-gradient(145deg,${product.colors[0]},${product.colors[1]})">${image}<span class="product-badge">${escapeHTML(product.badge)}</span><span class="emoji">${escapeHTML(product.emoji)}</span></div><div class="product-copy"><small>${escapeHTML(product.seller)} · ${detail}</small><span class="product-type">${escapeHTML(product.type)}</span><h3>${escapeHTML(product.name)}</h3><p>${escapeHTML(product.description)}</p></a><div class="price-row"><span class="price">${money.format(product.price)}</span><button class="add-button" data-id="${escapeHTML(product.id)}" data-name="${escapeHTML(product.name)}" data-real="${product.real?"true":"false"}">${product.real?"VER DATOS":"AGREGAR DEMO"}</button></div></div></article>`;
 }
 
 function render(){
@@ -44,14 +45,14 @@ async function loadCatalog(){
   products=examples;
   render();
   try{
-    const{data,error}=await window.bazarSupabase.from("products").select("id,name,slug,description,delivery_note,category,kind,price_cents,stock,status,created_at,seller_profiles(store_name,status)").eq("status","approved").order("created_at",{ascending:false});
+    const{data,error}=await window.bazarSupabase.from("products").select("id,name,slug,description,delivery_note,category,kind,price_cents,stock,status,created_at,seller_profiles(store_name,status),product_media(storage_path,alt_text,position)").eq("status","approved").order("created_at",{ascending:false});
     if(error)throw error;
-    const realProducts=data.filter(product=>product.seller_profiles?.status==="approved").map(product=>({
+    const realProducts=data.filter(product=>product.seller_profiles?.status==="approved").map(product=>{const media=product.product_media?.sort((a,b)=>a.position-b.position)?.[0];return({
       id:product.id,name:product.name,description:product.description,seller:product.seller_profiles.store_name,
       price:product.price_cents/100,type:product.kind==="digital"?"Digital":"Físico",category:categoryKey(product.category),categoryLabel:product.category,
       rating:0,badge:"APROBADO · PRODUCTO REAL",emoji:product.kind==="digital"?"📚":"◇",colors:product.kind==="digital"?["#efd7a8","#b95745"]:["#efc37c","#b73e34"],
-      real:true,delivery:product.delivery_note,stock:product.stock
-    }));
+      real:true,delivery:product.delivery_note,stock:product.stock,imageUrl:media?window.bazarSupabase.storage.from("product-images").getPublicUrl(media.storage_path).data.publicUrl:"",imageAlt:media?.alt_text
+    })});
     const realNames=new Set(realProducts.map(product=>normalizedName(product.name)));
     products=[...realProducts,...examples.filter(product=>!realNames.has(normalizedName(product.name)))];
     render();

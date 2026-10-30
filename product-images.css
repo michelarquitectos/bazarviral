@@ -1,0 +1,1 @@
+.product-art>img,.main-art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}.product-art:has(>img)::after,.main-art:has(>img)::after{display:none}.product-art:has(>img) .emoji,.main-art:has(>img)>span{display:none}.product-art:has(>img) .product-badge,.product-art:has(>img) .favorite{z-index:2}
