@@ -14,14 +14,14 @@
 
   async function loadRealQueue(){
     const[sellersResult,productsResult]=await Promise.all([
-      window.bazarSupabase.from("seller_profiles").select("id,store_name,slug,bio,category,status,created_at").eq("status","pending").order("created_at",{ascending:false}),
+      window.bazarSupabase.from("seller_profiles").select("id,store_name,slug,bio,category,status,created_at").order("created_at",{ascending:false}),
       window.bazarSupabase.from("products").select("id,name,description,delivery_note,category,kind,price_cents,currency,stock,status,created_at,seller_profiles(store_name,status),product_media(storage_path,alt_text,position)").order("created_at",{ascending:false})
     ]);
     if(sellersResult.error)throw sellersResult.error;
     if(productsResult.error)throw productsResult.error;
 
     const realItems=[
-      ...sellersResult.data.map(seller=>({
+      ...sellersResult.data.filter(seller=>seller.status==="pending").map(seller=>({
         id:`real-seller-${seller.id}`,entityId:seller.id,entityType:"seller_profile",table:"seller_profiles",real:true,
         type:"persona",icon:"🏪",title:`Solicitud de tienda · ${seller.store_name}`,owner:seller.store_name,
         meta:`Vendedor · ${seller.category}`,urgency:"high",urgencyLabel:"REAL",preview:initials(seller.store_name),
