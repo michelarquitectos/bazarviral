@@ -14,14 +14,17 @@
 <body>
   <header class="site-header account-header"><button class="icon-button menu-button">☰</button><nav class="desktop-nav"><a href="index.html">Inicio</a><a href="catalogo.html">Productos</a><a href="comunidad.html">Comunidad</a></nav><a class="brand" href="index.html"><img src="assets/bazar-viral-logo.png" alt="Bazar Viral"></a><div class="header-actions"><a class="icon-button account-link active" href="comprador.html">♙</a><button class="icon-button cart-button">🛒<span>0</span></button></div></header>
   <main class="buyer-shell">
-    <section class="buyer-hero"><div><p class="eyebrow">TU ESPACIO PERSONAL</p><h1>Tu bazar,<br>sin ruido.</h1><p>Guarda hallazgos, revisa tus futuros pedidos y descubre recomendaciones sin perder el control.</p><a class="primary-button" href="catalogo.html">DESCUBRIR PRODUCTOS</a></div><div class="buyer-summary"><article><span id="favoriteCount">0</span><small>Favoritos</small></article><article><span>0</span><small>Pedidos</small></article><article><span>0</span><small>Reseñas</small></article><p>Demostración local · No hay compras ni pagos reales</p></div></section>
+    <section class="buyer-hero personalized-hero"><div><p class="eyebrow">TU INICIO PERSONALIZADO</p><h1><span id="buyerGreeting">Hola.</span><br>Esto es para ti.</h1><p id="buyerIntro">Una mezcla clara de tus intereses, tendencias y descubrimientos nuevos. Tú decides qué quieres seguir viendo.</p><div class="hero-personal-actions"><a class="primary-button" href="#personalFeed">VER RECOMENDACIONES</a><button class="secondary-button" data-open-tab="preferences">AJUSTAR INTERESES</button></div></div><div class="buyer-summary"><article><span id="favoriteCount">0</span><small>Favoritos</small></article><article><span id="interestCount">0</span><small>Intereses</small></article><article><span id="viewCount">0</span><small>Señales</small></article><p>Personalización de prueba · Sin compras ni pagos reales</p></div></section>
 
     <nav class="account-tabs" aria-label="Secciones de mi cuenta"><button class="active" data-tab="overview">Resumen</button><button data-tab="favorites">Favoritos <span id="favoriteBadge">0</span></button><button data-tab="orders">Pedidos</button><button data-tab="preferences">Preferencias</button></nav>
 
     <section class="buyer-panel active" data-panel="overview">
-      <div class="panel-heading"><div><p class="eyebrow">RESUMEN</p><h2>Todo lo importante, a la vista.</h2></div></div>
+      <div class="personalization-note"><span>✦</span><div><strong>Este inicio cambia contigo</strong><p>Las recomendaciones se ordenan con tus intereses, favoritos y productos que decides explorar. Siempre conservamos tendencias y descubrimientos diferentes.</p></div><button data-open-tab="preferences">CONTROLAR</button></div>
       <div class="overview-grid"><article class="account-feature"><span>♡</span><div><strong>Favoritos que sí recuerdas</strong><p>Guarda productos desde la portada o su ficha y encuéntralos aquí.</p><button data-open-tab="favorites">VER FAVORITOS →</button></div></article><article class="account-feature"><span>□</span><div><strong>Pedidos claros</strong><p>Cuando activemos compras, podrás revisar estados y entregas sin mensajes confusos.</p><button data-open-tab="orders">VER PEDIDOS →</button></div></article><article class="account-feature"><span>✦</span><div><strong>Recomendaciones con criterio</strong><p>Usaremos tus preferencias para ordenar mejor el catálogo, no para saturarte.</p><button data-open-tab="preferences">AJUSTAR PREFERENCIAS →</button></div></article></div>
-      <section class="recommendation-block"><div class="panel-heading"><div><p class="eyebrow">PARA EMPEZAR</p><h2>Hallazgos que vale la pena mirar.</h2></div><a href="catalogo.html">Ver todo →</a></div><div class="buyer-products" id="recommendations"></div></section>
+      <section class="recommendation-block" id="personalFeed"><div class="panel-heading"><div><p class="eyebrow">PARA TI</p><h2>Elegidos según tus señales.</h2><p id="feedExplanation">Comenzamos con una mezcla de categorías y tendencias.</p></div><a href="catalogo.html?v=4">Ver todo →</a></div><div class="buyer-products personalized-products" id="recommendations"></div></section>
+      <section class="recommendation-block"><div class="panel-heading"><div><p class="eyebrow">TENDENCIAS DE HOY</p><h2>Lo que está llamando la atención.</h2></div><a href="comunidad.html">Ver comunidad →</a></div><div class="buyer-products" id="trendingProducts"></div></section>
+      <section class="personal-community"><article class="viral-story"><div class="story-visual"><span>▶</span><small>VIDEO DE EJEMPLO</small></div><div><p class="eyebrow">LA COMUNIDAD LO PROBÓ</p><h2>Ideas reales para usar mejor cada hallazgo.</h2><p>El contenido de vendedores y creadores también formará parte de tus recomendaciones, claramente identificado.</p><a href="comunidad.html">EXPLORAR VIDEOS →</a></div></article><article class="discovery-card"><span>↗</span><p class="eyebrow">ALGO DIFERENTE</p><h3>Sal de tu burbuja.</h3><p>Reservamos un espacio para categorías nuevas, porque personalizar no significa mostrarte siempre lo mismo.</p><button id="refreshDiscovery">MOSTRAR OTRO DESCUBRIMIENTO</button></article></section>
+      <section class="recommendation-block"><div class="panel-heading"><div><p class="eyebrow">DESCUBRE ALGO DIFERENTE</p><h2>Una recomendación fuera de lo habitual.</h2></div></div><div class="buyer-products discovery-products" id="discoveryProducts"></div></section>
     </section>
 
     <section class="buyer-panel" data-panel="favorites" hidden>
@@ -43,8 +46,10 @@
     </section>
   </main>
   <div class="toast" id="toast"></div>
+  <script src="assets/vendor/supabase.js"></script>
+  <script src="supabase-client.js"></script>
   <script src="products-data.js"></script>
   <script src="cart-store.js"></script>
-  <script src="comprador.js"></script>
+  <script src="comprador-personalizado.js?v=1"></script>
 </body>
 </html>

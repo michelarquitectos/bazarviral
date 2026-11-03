@@ -28,7 +28,7 @@ async function finishSignedIn(user){
   if(databaseRoles.includes("admin"))destinations.push({icon:"✓",title:"Administración",copy:"Revisa solicitudes y supervisa la plataforma.",href:"admin.html?v=6",action:"ABRIR PANEL"});
   if(databaseRoles.includes("seller"))destinations.push({icon:"🏪",title:"Mi tienda",copy:"Consulta productos, inventario y estado de aprobación.",href:"panel-vendedor.html?v=5",action:"ABRIR PANEL"});
   if(databaseRoles.includes("creator"))destinations.push({icon:"🎬",title:"Mi espacio creativo",copy:"Consulta campañas y contenido.",href:"panel-creador.html?v=1",action:"ABRIR ESPACIO"});
-  destinations.push({icon:"🛍️",title:"Explorar como comprador",copy:"Visita el catálogo y descubre productos.",href:"catalogo.html",action:"VER CATÁLOGO"});
+  destinations.push({icon:"🛍️",title:"Mi inicio personalizado",copy:"Descubre productos y tendencias ordenados para ti.",href:"comprador.html?v=2",action:"ABRIR MI INICIO"});
   document.querySelector("#nextSteps").innerHTML=destinations.map(item=>`<a class="account-destination" href="${item.href}"><span>${item.icon}</span><div><strong>${item.title}</strong><small>${item.copy}</small></div><b>${item.action} →</b></a>`).join("");
   document.querySelector("#continueLink").href=destinations[0].href;
   document.querySelector("#continueLink").textContent=destinations[0].action;
