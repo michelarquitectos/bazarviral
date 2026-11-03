@@ -40,7 +40,7 @@ function bindInteractions(){
   document.querySelector("#sellerProductSearch").oninput=renderProducts;
   document.querySelectorAll("[data-product-filter]").forEach(button=>button.onclick=()=>{productFilter=button.dataset.productFilter;document.querySelectorAll("[data-product-filter]").forEach(item=>item.classList.toggle("active",item===button));renderProducts()});
   document.querySelector("#clearSellerSearch").onclick=()=>{document.querySelector("#sellerProductSearch").value="";productFilter="all";document.querySelectorAll("[data-product-filter]").forEach(item=>item.classList.toggle("active",item.dataset.productFilter==="all"));renderProducts()};
-  document.querySelectorAll("#newProduct,[data-new-product],[data-edit-product]").forEach(button=>button.onclick=()=>notify("El formulario para nuevos productos será el siguiente bloque"));
+  document.querySelectorAll("#newProduct,[data-new-product],[data-edit-product]").forEach(button=>button.onclick=()=>location.href="vendedor.html?nuevo=1&v=5");
   document.querySelector("#sellerHelp").onclick=()=>notify("Tu tienda está aprobada y las ventas continúan desactivadas");
   document.querySelector("#openOrder").onclick=()=>notify("Todavía no existen pedidos reales");
   document.querySelector("#editStore").onclick=()=>notify("La edición del perfil se habilitará en el siguiente bloque");
@@ -78,6 +78,8 @@ function applyRealData(profile,seller,products){
     id:product.id,name:product.name,category:product.category,price:money(product.price_cents),stock:product.stock??"Sin límite",
     delivery:product.delivery_note,description:product.description,filterState:product.status==="approved"?"ready":"draft",
     stateLabel:product.status==="approved"?"APROBADO":product.status==="pending"?"EN REVISIÓN":"BORRADOR",
+    kind:product.kind,priceCents:product.price_cents,rawStatus:product.status,
+    media:product.product_media?.sort((a,b)=>a.position-b.position)?.[0]||null,
     emoji:product.kind==="digital"?"📚":"◇",colors:product.kind==="digital"?["#ecd4a4","#b35443"]:["#efc583","#b64035"]
   }));
   document.querySelector('.seller-dashboard-nav [data-tab="products"] b').textContent=products.length;
@@ -111,7 +113,7 @@ async function loadRealSellerDashboard(){
   if(profileResult.error)throw profileResult.error;
   if(sellerResult.error)throw sellerResult.error;
   if(!sellerResult.data){location.replace("vendedor.html?v=2");return}
-  const productsResult=await window.bazarSupabase.from("products").select("id,name,description,delivery_note,category,kind,price_cents,stock,status").eq("seller_id",sellerResult.data.id).order("created_at",{ascending:false});
+  const productsResult=await window.bazarSupabase.from("products").select("id,name,description,delivery_note,category,kind,price_cents,stock,status,product_media(id,storage_path,alt_text,position)").eq("seller_id",sellerResult.data.id).order("created_at",{ascending:false});
   if(productsResult.error)throw productsResult.error;
   applyRealData(profileResult.data,sellerResult.data,productsResult.data);
 }
