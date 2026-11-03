@@ -95,6 +95,8 @@ function applyRealData(profile,seller,products){
   preview.querySelector("small").textContent=seller.status==="approved"?"TIENDA APROBADA":"TIENDA EN REVISIÓN";
   preview.querySelector("h3").textContent=seller.store_name;
   preview.querySelector("p").textContent=seller.bio;
+  preview.querySelector("a").href=`tienda.html?seller=${encodeURIComponent(seller.store_name)}`;
+  preview.querySelector("a").textContent="VER TIENDA PÚBLICA →";
   const tags=preview.querySelectorAll(":scope > div:nth-child(2) > div span");
   tags[0].textContent=seller.category;
   tags[1].textContent=profile.city||"Ubicación no indicada";
