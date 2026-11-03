@@ -13,12 +13,16 @@
   const createdLabel=value=>new Intl.DateTimeFormat("es-MX",{dateStyle:"medium",timeStyle:"short"}).format(new Date(value));
 
   async function loadRealQueue(){
-    const[sellersResult,productsResult]=await Promise.all([
+    const[sellersResult,productsResult,creatorsResult,contentResult]=await Promise.all([
       window.bazarSupabase.from("seller_profiles").select("id,store_name,slug,bio,category,status,created_at").order("created_at",{ascending:false}),
-      window.bazarSupabase.from("products").select("id,name,description,delivery_note,category,kind,price_cents,currency,stock,status,created_at,seller_profiles(store_name,status),product_media(storage_path,alt_text,position)").order("created_at",{ascending:false})
+      window.bazarSupabase.from("products").select("id,name,description,delivery_note,category,kind,price_cents,currency,stock,status,created_at,seller_profiles(store_name,status),product_media(storage_path,alt_text,position)").order("created_at",{ascending:false}),
+      window.bazarSupabase.from("creator_profiles").select("id,creator_name,handle,bio,topics,status,created_at").order("created_at",{ascending:false}),
+      window.bazarSupabase.from("creator_content").select("id,title,description,external_url,disclosure,status,created_at,creator_profiles(creator_name,handle,status),products(name)").order("created_at",{ascending:false})
     ]);
     if(sellersResult.error)throw sellersResult.error;
     if(productsResult.error)throw productsResult.error;
+    if(creatorsResult.error)throw creatorsResult.error;
+    if(contentResult.error)throw contentResult.error;
 
     const realItems=[
       ...sellersResult.data.filter(seller=>seller.status==="pending").map(seller=>({
@@ -32,6 +36,18 @@
         type:"producto",icon:product.kind==="digital"?"📚":"◇",title:product.name,owner:product.seller_profiles?.store_name||"Tienda",
         meta:`${product.kind==="digital"?"Producto digital":"Producto físico"} · ${product.category}`,urgency:"high",urgencyLabel:"REAL",preview:product.kind==="digital"?"📚":"◇",imageUrl:product.product_media?.[0]?.storage_path?window.bazarSupabase.storage.from("product-images").getPublicUrl(product.product_media[0].storage_path).data.publicUrl:null,imageAlt:product.product_media?.[0]?.alt_text||product.name,
         details:{"Tienda":product.seller_profiles?.store_name||"Tienda","Estado de la tienda":product.seller_profiles?.status==="approved"?"Aprobada":"Pendiente de aprobación","Precio":money(product.price_cents),"Inventario":product.stock??"Sin límite","Entrega":product.delivery_note,"Descripción":product.description,"Enviado":createdLabel(product.created_at)}
+      })),
+      ...creatorsResult.data.filter(creator=>creator.status==="pending").map(creator=>({
+        id:`real-creator-${creator.id}`,entityId:creator.id,entityType:"creator_profile",table:"creator_profiles",real:true,
+        type:"persona",icon:"🎬",title:`Perfil de creador · ${creator.creator_name}`,owner:`@${creator.handle}`,
+        meta:`Creador · ${(creator.topics||[]).join(", ")||"Sin tema"}`,urgency:"high",urgencyLabel:"REAL",preview:initials(creator.creator_name),
+        details:{"Nombre creativo":creator.creator_name,"Usuario":`@${creator.handle}`,"Temas":(creator.topics||[]).join(", ")||"Sin tema","Presentación":creator.bio,"Enviado":createdLabel(creator.created_at)}
+      })),
+      ...contentResult.data.filter(content=>content.status==="pending").map(content=>({
+        id:`real-content-${content.id}`,entityId:content.id,entityType:"creator_content",table:"creator_content",real:true,creatorApproved:content.creator_profiles?.status==="approved",
+        type:"contenido",icon:"▶",title:content.title,owner:content.creator_profiles?.creator_name||"Creador",
+        meta:`@${content.creator_profiles?.handle||"creador"} · Contenido viral`,urgency:"high",urgencyLabel:"REAL",preview:"▶",
+        details:{"Creador":content.creator_profiles?.creator_name||"Creador","Estado del perfil":content.creator_profiles?.status==="approved"?"Aprobado":"Pendiente de aprobación","Producto":content.products?.name||"Contenido original","Descripción":content.description,"Aviso comercial":content.disclosure,"Enlace":content.external_url||"Sin enlace","Enviado":createdLabel(content.created_at)}
       }))
     ];
     for(let index=reviewItems.length-1;index>=0;index-=1){if(reviewItems[index].real)reviewItems.splice(index,1)}

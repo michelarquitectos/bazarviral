@@ -35,6 +35,10 @@ async function resolveItem(status){
     notify("Aprueba primero la tienda responsable de este producto");
     return;
   }
+  if(status==="approved"&&item.real&&item.entityType==="creator_content"&&!item.creatorApproved){
+    notify("Aprueba primero el perfil del creador");
+    return;
+  }
   if(status==="approved"&&![...document.querySelectorAll(".checklist input")].every(input=>input.checked)){
     notify("Completa las tres comprobaciones antes de aprobar");
     return;

@@ -194,6 +194,24 @@ create trigger on_seller_profile_created
 after insert on public.seller_profiles
 for each row execute function public.assign_seller_role();
 
+-- Solicitar un perfil creativo concede el rol creador, nunca el rol admin.
+create or replace function public.assign_creator_role()
+returns trigger
+language plpgsql
+security definer set search_path = ''
+as $$
+begin
+  insert into public.account_roles (account_id, role)
+  values (new.account_id, 'creator')
+  on conflict do nothing;
+  return new;
+end;
+$$;
+
+create trigger on_creator_profile_created
+after insert on public.creator_profiles
+for each row execute function public.assign_creator_role();
+
 -- Funciones auxiliares para políticas. SECURITY DEFINER evita recursión de RLS.
 create or replace function public.has_role(requested_role public.user_role)
 returns boolean

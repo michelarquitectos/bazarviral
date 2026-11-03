@@ -16,7 +16,7 @@
 <body class="creator-page">
   <header class="seller-header">
     <a class="seller-brand" href="index.html"><img src="assets/bazar-viral-logo.png" alt="Bazar Viral"></a>
-    <div class="header-status"><span></span> Espacio creativo de demostración</div>
+    <div class="header-status"><span></span> Solicitud real · pagos desactivados</div>
     <a class="exit-link" href="cuenta.html">Guardar y salir</a>
   </header>
 
@@ -29,7 +29,7 @@
         <button class="active" data-go="1"><span>1</span><div><strong>Perfil público</strong><small>Identidad creativa</small></div></button>
         <button data-go="2"><span>2</span><div><strong>Autenticidad</strong><small>Contenido y comunidad</small></div></button>
         <button data-go="3"><span>3</span><div><strong>Campañas</strong><small>Comisión y atribución</small></div></button>
-        <button data-go="4"><span>4</span><div><strong>Primer video</strong><small>Vinculación de prueba</small></div></button>
+        <button data-go="4"><span>4</span><div><strong>Primer contenido</strong><small>Envío a revisión</small></div></button>
       </nav>
       <div class="privacy-card"><span>✦</span><div><strong>La originalidad importa</strong><p>Premiaremos contenido útil y auténtico, no solo el número de seguidores.</p></div></div>
     </aside>
@@ -56,10 +56,10 @@
         <div class="creator-principles"><article><span>01</span><strong>Original</strong><p>Tu voz, tu edición y tu experiencia.</p></article><article><span>02</span><strong>Útil</strong><p>Ayuda a decidir, usar o entender.</p></article><article><span>03</span><strong>Transparente</strong><p>Indica cuando puedes recibir comisión.</p></article></div>
         <form class="seller-form" id="authenticityForm" novalidate>
           <fieldset><legend>¿Dónde publicas principalmente?</legend><div class="radio-cards platform-cards"><label><input type="radio" name="platform" value="TikTok" checked><span><b>TikTok</b><small>Videos verticales</small></span></label><label><input type="radio" name="platform" value="Instagram"><span><b>Instagram</b><small>Reels y publicaciones</small></span></label><label><input type="radio" name="platform" value="YouTube"><span><b>YouTube</b><small>Shorts y videos</small></span></label></div></fieldset>
-          <div class="two-columns"><label>Enlace público de demostración <input id="socialLink" required type="url" placeholder="https://ejemplo.com/tu-perfil"><small class="field-hint">Usa un enlace inventado para esta prueba.</small><small class="field-error"></small></label><label>Tamaño aproximado de comunidad <select id="audienceSize" required><option value="">Selecciona</option><option>Estoy empezando</option><option>1 a 1,000</option><option>1,001 a 10,000</option><option>10,001 a 50,000</option><option>Más de 50,000</option></select><small class="field-error"></small></label></div>
+          <div class="two-columns"><label>Enlace público de tu perfil <input id="socialLink" required type="url" placeholder="https://tiktok.com/@tuusuario"><small class="field-hint">Comparte únicamente un perfil público que quieras presentar.</small><small class="field-error"></small></label><label>Tamaño aproximado de comunidad <select id="audienceSize" required><option value="">Selecciona</option><option>Estoy empezando</option><option>1 a 1,000</option><option>1,001 a 10,000</option><option>10,001 a 50,000</option><option>Más de 50,000</option></select><small class="field-error"></small></label></div>
           <label>¿Qué hace diferente tu contenido? <textarea id="creativeDifference" required minlength="25" maxlength="220" placeholder="Cuéntanos tu enfoque, humor, experiencia o forma de explicar."></textarea><small class="field-error"></small></label>
         </form>
-        <div class="demo-warning"><span>ⓘ</span><div><strong>En esta demostración no revisaremos cuentas reales.</strong><p>La verificación y las métricas se conectarán únicamente cuando el sistema real esté listo.</p></div></div>
+        <div class="demo-warning"><span>ⓘ</span><div><strong>Tu perfil se guardará como pendiente.</strong><p>La verificación se realizará antes de mostrarlo públicamente. Los pagos permanecen desactivados.</p></div></div>
         <div class="step-actions"><button class="secondary-button" data-back>ATRÁS</button><button class="primary-button" data-next>CONTINUAR</button></div>
       </section>
 
@@ -73,12 +73,12 @@
       </section>
 
       <section class="seller-step" data-step="4" hidden>
-        <div class="step-heading"><p class="eyebrow">PRIMER CONTENIDO</p><h2>Vincula un video de prueba.</h2><p>Esto simula el proceso. No se publicará ni se enviará ningún enlace.</p></div>
+        <div class="step-heading"><p class="eyebrow">PRIMER CONTENIDO</p><h2>Vincula tu primer video.</h2><p>Se guardará para revisión; no aparecerá en la comunidad hasta que sea aprobado.</p></div>
         <div class="product-editor">
           <form class="seller-form" id="contentForm" novalidate>
             <label>Campaña <select id="campaignSelect" required><option value="">Selecciona</option><option value="Lámpara hongo ámbar">Lámpara hongo ámbar · 8% de ejemplo</option><option value="Kit de papelería creativa">Kit de papelería creativa · 7% de ejemplo</option><option value="Guía digital de organización">Guía digital de organización · 10% de ejemplo</option></select><small class="field-error"></small></label>
             <div class="two-columns"><label>Plataforma <select id="contentPlatform" required><option value="">Selecciona</option><option>TikTok</option><option>Instagram Reels</option><option>YouTube Shorts</option></select><small class="field-error"></small></label><label>Estado <select id="contentStatus" required><option value="">Selecciona</option><option>Borrador, aún no publicado</option><option>Video de demostración</option></select><small class="field-error"></small></label></div>
-            <label>Enlace de demostración <input id="contentLink" required type="url" placeholder="https://ejemplo.com/video"><small class="field-hint">No uses un enlace personal real durante la prueba.</small><small class="field-error"></small></label>
+            <label>Enlace público del video <input id="contentLink" required type="url" placeholder="https://tiktok.com/@tuusuario/video/..."><small class="field-hint">El equipo de Bazar Viral lo usará para revisar el contenido.</small><small class="field-error"></small></label>
             <label>Título o idea principal <input id="contentTitle" required minlength="6" maxlength="80" placeholder="Ej. Probé la lámpara viral que parece un hongo"><small class="field-error"></small></label>
             <label>¿Qué aporta tu video? <textarea id="contentValue" required minlength="25" maxlength="220" placeholder="Explica qué muestras, pruebas o enseñas de manera original."></textarea><small class="field-error"></small></label>
             <label class="disclosure-check"><input id="disclosure" type="checkbox"><span>Mi contenido incluirá un aviso visible de que puedo recibir comisión.</span></label><small class="terms-error" id="disclosureError"></small>
@@ -91,12 +91,12 @@
     </section>
 
     <section class="completion-card" id="completionCard" hidden>
-      <div class="success-mark">✦</div><p class="eyebrow">RECORRIDO COMPLETADO</p><h2>Tu perfil creativo tiene una dirección clara.</h2><p><strong id="completeCreator">Tu perfil</strong> y su primer video de prueba quedaron preparados. Nada fue publicado ni enviado a internet.</p>
+      <div class="success-mark">✦</div><p class="eyebrow">SOLICITUD ENVIADA</p><h2>Tu perfil creativo ya está en revisión.</h2><p><strong id="completeCreator">Tu perfil</strong> y su primer contenido quedaron guardados como pendientes. Todavía no son públicos ni generan comisiones.</p>
       <div class="completion-summary"><article><span>✓</span><div><strong>Perfil creativo</strong><small>Preparado</small></div></article><article><span>✓</span><div><strong>Autenticidad</strong><small>Presentada</small></div></article><article><span>✓</span><div><strong>Reglas de campaña</strong><small>Comprendidas</small></div></article><article><span>◷</span><div><strong>Primer video</strong><small>Pendiente de revisión</small></div></article></div>
       <div class="completion-actions"><a class="primary-button" href="panel-creador.html">IR A MI PANEL</a><button class="secondary-button" id="editCreatorDraft">EDITAR BORRADOR</button></div><small>Desde tu panel podrás organizar campañas, videos y comisiones.</small>
     </section>
   </main>
-  <div class="save-toast" id="saveToast" role="status">Progreso guardado para esta demostración</div>
-  <script src="creador.js"></script>
+  <div class="save-toast" id="saveToast" role="status">Progreso guardado</div>
+  <script src="assets/vendor/supabase.js"></script><script src="supabase-client.js"></script><script src="creador.js?v=2"></script>
 </body>
 </html>
